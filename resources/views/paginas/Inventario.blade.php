@@ -22,60 +22,70 @@
     </div>
 </div>
 
+@if(isset($error))
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+        <p class="text-xs text-red-700 font-bold uppercase tracking-widest">{{ $error }}</p>
+    </div>
+@endif
+
 <div class="bg-white border border-gray-100 shadow-sm overflow-hidden">
     <table class="w-full text-sm text-left">
         <thead class="text-[10px] text-gray-400 uppercase bg-gray-50 border-b">
             <tr>
-                <th class="px-6 py-4">SKU</th>
+                <th class="px-6 py-4">ID / SKU</th>
                 <th class="px-6 py-4">Producto</th>
                 <th class="px-6 py-4">Categoría</th>
-                <th class="px-6 py-4">Stock</th>
-                <th class="px-6 py-4">Precio</th>
-                <th class="px-6 py-4">Estado</th>
+                <th class="px-6 py-4">Stock Actual</th>
+                <th class="px-6 py-4">Precio Base</th>
+                <th class="px-6 py-4">Estado Red</th>
                 <th class="px-6 py-4"></th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 text-gray-600">
-            <tr class="hover:bg-[#faf9f7] transition">
-                <td class="px-6 py-4 font-mono text-[11px] text-[#958174] font-bold">SL-001</td>
-                <td class="px-6 py-4 font-medium text-gray-900">Sofá Exterior Málaga 3P</td>
-                <td class="px-6 py-4">Sofás</td>
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-16 bg-gray-100 h-1 rounded-full">
-                            <div class="bg-[#798273] h-1 rounded-full" style="width: 70%"></div>
+            @forelse($stock as $item)
+                {{-- Convertimos a array si viene como objeto stdClass --}}
+                @php $item = (array)$item; @endphp
+                <tr class="hover:bg-[#faf9f7] transition">
+                    <td class="px-6 py-4 font-mono text-[11px] text-[#958174] font-bold">
+                        SL-{{ str_pad($item['variante_id'], 3, '0', STR_PAD_LEFT) }}
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900">{{ $item['producto'] }}</td>
+                    <td class="px-6 py-4 uppercase text-[10px] tracking-wider">{{ $item['material'] }}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 bg-gray-100 h-1 rounded-full">
+                                <div class="h-1 rounded-full {{ $item['stock_total'] > 5 ? 'bg-sage-green' : 'bg-orange-400' }}" 
+                                     style="width: {{ min(($item['stock_total'] / 20) * 100, 100) }}%"></div>
+                            </div>
+                            <span class="font-bold text-gray-900">{{ $item['stock_total'] }}</span>
                         </div>
-                        <span class="font-bold">12</span>
-                    </div>
-                </td>
-                <td class="px-6 py-4 font-semibold text-gray-900">$4,200</td>
-                <td class="px-6 py-4">
-                    <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2.5 py-1 rounded">OK</span>
-                </td>
-                <td class="px-6 py-4">
-                    <button class="text-[#958174] hover:underline font-medium">Editar</button>
-                </td>
-            </tr>
-            <tr class="hover:bg-[#faf9f7]">
-                <td class="px-6 py-4 font-mono text-[11px] text-[#958174] font-bold">SL-003</td>
-                <td class="px-6 py-4 font-medium text-gray-900">Mesa Olivo 180cm</td>
-                <td class="px-6 py-4">Mesas</td>
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-16 bg-gray-100 h-1 rounded-full">
-                            <div class="bg-orange-400 h-1 rounded-full" style="width: 20%"></div>
-                        </div>
-                        <span class="font-bold">3</span>
-                    </div>
-                </td>
-                <td class="px-6 py-4 font-semibold text-gray-900">$2,800</td>
-                <td class="px-6 py-4">
-                    <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2.5 py-1 rounded">BAJO</span>
-                </td>
-                <td class="px-6 py-4">
-                    <button class="text-[#958174] hover:underline font-medium">Editar</button>
-                </td>
-            </tr>
+                    </td>
+                    <td class="px-6 py-4 font-semibold text-gray-900">
+                        {{-- El precio lo tomamos de una columna por defecto si no viene en esta vista --}}
+                        ${{ number_format($item['precio_venta'] ?? 0, 2) }}
+                    </td>
+                    <td class="px-6 py-4">
+                        @if($item['stock_total'] > 5)
+                            <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2.5 py-1 rounded">DISPONIBLE</span>
+                        @elseif($item['stock_total'] > 0)
+                            <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2.5 py-1 rounded">CRÍTICO</span>
+                        @else
+                            <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2.5 py-1 rounded">SIN STOCK</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4">
+                        <button class="text-[#958174] hover:underline font-medium uppercase text-[9px] tracking-widest font-bold">Gestionar</button>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="px-6 py-12 text-center">
+                        <p class="text-[10px] uppercase tracking-[3px] text-gray-400 font-bold">
+                            No hay muebles registrados en el inventario.
+                        </p>
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
