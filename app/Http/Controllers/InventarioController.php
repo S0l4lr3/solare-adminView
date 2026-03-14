@@ -21,7 +21,7 @@ class InventarioController extends Controller
 
         // 2. Petición HTTP al Backend (Nodo Central) solicitando el stock
         // Usamos la URL del servidor local de desarrollo
-        $response = Http::withToken($token)->get('http://127.0.0.1:8000/api/inventario');
+        $response = Http::withToken($token)->get('http://solare-backend.railway.internal/api/inventario');
 
         if ($response->successful()) {
             $stock = $response->json();
