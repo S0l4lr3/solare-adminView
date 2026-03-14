@@ -1,5 +1,9 @@
 <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-solare-musgo flex flex-col">
+   <div class="h-full px-3 py-4 overflow-y-auto bg-solare-musgo flex flex-col relative">
+      {{-- Botón de cerrar para celulares --}}
+      <button onclick="document.getElementById('logo-sidebar').classList.add('-translate-x-full')" class="sm:hidden absolute top-4 right-4 text-white/50 hover:text-white">
+         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
       <div class="mb-10 px-4 pt-4">
          <span class="serif text-2xl text-white tracking-[3px]">SOLARE</span>
          <p class="text-[8px] tracking-[2.5px] text-white/40 uppercase">Muebles de Exterior</p>
