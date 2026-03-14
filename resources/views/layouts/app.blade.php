@@ -22,13 +22,18 @@
     @include('components.sidebar')
 
     <div class="p-4 sm:ml-64">
-        <header class="flex items-center justify-between mb-6 bg-white p-6 border-b border-gray-200">
-            <div>
-                <span class="text-[10px] font-bold tracking-[2.5px] uppercase text-solare-arcilla">@yield('label')</span>
-                <h1 class="serif text-3xl font-normal text-gray-900">@yield('header_title')</h1>
-            </div>
-            <div class="flex gap-3">
-                @yield('actions')
+        <header class="flex items-center mb-6 bg-white p-6 border-b border-gray-200">
+            <button onclick="document.getElementById('logo-sidebar').classList.toggle('-translate-x-full')" class="sm:hidden mr-4 p-2 text-gray-600 hover:bg-gray-100 rounded-lg border border-gray-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div class="flex-1 flex justify-between items-center">
+                <div>
+                    <span class="text-[10px] font-bold tracking-[2.5px] uppercase text-solare-arcilla">@yield('label')</span>
+                    <h1 class="serif text-3xl font-normal text-gray-900">@yield('header_title')</h1>
+                </div>
+                <div class="flex gap-3">
+                    @yield('actions')
+                </div>
             </div>
         </header>
 
