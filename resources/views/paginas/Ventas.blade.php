@@ -44,30 +44,20 @@
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
+            @foreach ($pedidos as $pedido)
             <tr class="hover:bg-gray-50 transition">
-                <td class="px-6 py-4 font-bold text-[#958174]">#SL-0891</td>
-                <td class="px-6 py-4 font-medium text-gray-900">Hotel Marquesa</td>
-                <td class="px-6 py-4 text-xs">14 Feb</td>
-                <td class="px-6 py-4 font-bold">$18,200</td>
+                <td class="px-6 py-4 font-bold text-[#958174]">{{ $pedido->id }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900">{{ $pedido->cliente_id }}</td>
+                <td class="px-6 py-4 text-xs">{{ $pedido->fecha_pedido }}</td>
+                <td class="px-6 py-4 font-bold">$10000</td>
                 <td class="px-6 py-4">
-                    <span class="bg-green-100 text-green-800 text-[10px] font-bold px-3 py-1 rounded-sm">ENTREGADO</span>
+                    <span class="bg-green-100 text-green-800 text-[10px] font-bold px-3 py-1 rounded-sm">{{ $pedido->estado_envio }}</span>
                 </td>
                 <td class="px-6 py-4">
                     <button class="text-[#798273] font-bold text-[10px] uppercase hover:underline">Detalles</button>
                 </td>
             </tr>
-            <tr class="hover:bg-gray-50 transition">
-                <td class="px-6 py-4 font-bold text-[#958174]">#SL-0890</td>
-                <td class="px-6 py-4 font-medium text-gray-900">Villa Palermo</td>
-                <td class="px-6 py-4 text-xs">13 Feb</td>
-                <td class="px-6 py-4 font-bold">$9,600</td>
-                <td class="px-6 py-4">
-                    <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-3 py-1 rounded-sm uppercase">En proceso</span>
-                </td>
-                <td class="px-6 py-4">
-                    <button class="text-[#798273] font-bold text-[10px] uppercase hover:underline">Detalles</button>
-                </td>
-            </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
