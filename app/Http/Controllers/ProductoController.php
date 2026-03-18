@@ -13,14 +13,14 @@ class ProductoController extends Controller
     {
         $busqueda = $request->input('busqueda');
 
-        // Petición a la API del backend en Railway
+        // Petición a la API del backend
         $response = Http::get("{$this->apiUrl}/productos", [
-            'busqueda' => $busqueda
+            'search' => $busqueda
         ]);
 
         $productos = $response->successful() ? $response->json() : [];
 
-        // También traemos categorías de la API
+        // Traer categorías de la API
         $categoriasResponse = Http::get("{$this->apiUrl}/categorias");
         $categorias = $categoriasResponse->successful() ? $categoriasResponse->json() : [];
 
@@ -34,19 +34,15 @@ class ProductoController extends Controller
         return view('/productos/Productos-crear', compact('categorias'));
     }
 
-    // Guardar nuevo producto en el Backend de Railway
     public function store(Request $request)
     {
-        $data = $request->all();
-
-        // Enviamos los datos a la API
-        $response = Http::post("{$this->apiUrl}/productos", $data);
+        $response = Http::post("{$this->apiUrl}/productos", $request->all());
 
         if ($response->successful()) {
-            return redirect()->route('productos.index')->with('success', 'Producto guardado exitosamente en Railway.');
+            return redirect()->route('productos.index')->with('success', 'Producto guardado.');
         }
 
-        return back()->with('error', 'Error al guardar en el servidor: ' . $response->body());
+        return back()->with('error', 'Error al guardar en el backend.');
     }
 
     public function edit($id)
@@ -71,9 +67,21 @@ class ProductoController extends Controller
         return back()->with('error', 'Error al actualizar.');
     }
 
+    // LÍNEAS 81-86: MÉTODO PARA CAMBIAR EL ESTATUS (IMPORTANTE)
+    public function toggleEstatus($id)
+    {
+        $response = Http::patch("{$this->apiUrl}/productos/{$id}/toggle-estatus");
+
+        if ($response->successful()) {
+            return back()->with('success', 'Estado del producto actualizado correctamente.');
+        }
+
+        return back()->with('error', 'No se pudo cambiar el estado del producto.');
+    }
+
     public function destroy($id)
     {
-        Http::delete("{$this->apiUrl}/productos/{$id}");
+        $response = Http::delete("{$this->apiUrl}/productos/{$id}");
         return redirect()->route('productos.index');
     }
 }

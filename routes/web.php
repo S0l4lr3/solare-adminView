@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\UsuarioController;
 
 
 // login y ruta principal
@@ -23,6 +24,9 @@ Route::resource('productos', ProductoController::class);
 
 // CRUD de Categorías conectado a API Railway (de la rama alex)
 Route::resource('categorias', CategoriaController::class);
+
+// CRUD de Usuarios conectado a API Railway (de la rama alex)
+Route::resource('usuarios', UsuarioController::class);
 
 Route::get('/Inventario', [InventarioController::class, 'index'])->name('inventario');
 
