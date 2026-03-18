@@ -85,10 +85,10 @@
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 text-xs">
-                                        {{ \Carbon\Carbon::parse($categoria->creado_en)->format('d/m/Y') }}
+                                        {{ isset($categoria['creado_en']) ? \Carbon\Carbon::parse($categoria['creado_en'])->format('d/m/Y') : '—' }}
                                     </td>
                                     <td class="px-4 py-3 text-xs">
-                                        {{ $categoria->actualizado_en ? \Carbon\Carbon::parse($categoria->actualizado_en)->format('d/m/Y H:i') : '—' }}
+                                        {{ isset($categoria['actualizado_en']) ? \Carbon\Carbon::parse($categoria['actualizado_en'])->format('d/m/Y H:i') : '—' }}
                                     </td>
                                     <td class="px-4 py-3 text-right relative">
                                         <button onclick="toggleMenu('menu-{{ $categoria["id"] }}')"
