@@ -31,21 +31,26 @@ class CategoriaController extends Controller
     // Guardar nueva categoría en el Backend de Railway
     public function store(Request $request)
     {
+        $token = session('api_token');
+        
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
         ]);
 
-        $response = Http::post("{$this->apiUrl}/categorias", [
+        $response = Http::withToken($token)->post("{$this->apiUrl}/categorias", [
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
         ]);
 
         if ($response->successful()) {
-            return redirect()->route('categorias.index')->with('success', 'Categoría guardada en Railway.');
+            return redirect()->route('categorias.index')->with('success', 'Categoría guardada exitosamente.');
         }
 
-        return back()->with('error', 'Error al guardar la categoría: ' . $response->body());
+        // Si hay error, intentamos leer el mensaje que enviamos desde el backend mejorado
+        $errorMsg = $response->json('error') ?? $response->json('errores.nombre.0') ?? 'Error desconocido en el servidor.';
+        
+        return back()->with('error', 'Error al guardar: ' . $errorMsg);
     }
 
     public function edit($id)

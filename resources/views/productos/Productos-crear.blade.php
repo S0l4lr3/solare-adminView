@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo producto')
-@section('label', 'Panel General')
-@section('header_title', 'Bienvenido, Admin')
+@section('title', 'Nuevo Producto')
+@section('label', 'Gestión de Catálogo')
+@section('header_title', 'Registrar Nuevo Producto')
 
 @section('content')
 
-    <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Agregar un nuevo producto</h2>
+    <section class="bg-[#f7f5f2]">
+        <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h2 class="serif mb-6 text-3xl font-normal text-gray-900">Información del Producto</h2>
 
             <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -87,13 +87,13 @@
                     </div>
                 </div>
 
-                <div class="flex gap-3 mt-4 sm:mt-6">
+                <div class="flex gap-3 mt-8 pt-6 border-t border-gray-100">
                     <button type="submit"
-                        class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                        Agregar producto
+                        class="px-6 py-2.5 text-sm font-medium text-white bg-solare-musgo rounded-lg hover:bg-opacity-90 transition-all shadow-sm">
+                        Registrar Producto
                     </button>
                     <a href="{{ route('productos.index') }}"
-                        class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
                         Cancelar
                     </a>
                 </div>

@@ -35,12 +35,17 @@ class UsuarioController extends Controller
     {
         $token = session('api_token');
         
-        // Consultamos los roles disponibles en el backend
+        // Consultamos los roles en el backend
         $response = Http::withToken($token)->get("{$this->apiUrl}/admin/roles");
         
-        // Si la API no tiene esa ruta específica, podemos usar un fallback 
-        // o verificar si están en otra ruta. Por ahora, intentamos obtenerlos.
-        $roles = $response->successful() ? $response->json() : [];
+        // Laravel a veces devuelve el JSON directamente o bajo una llave 'data'
+        $roles = $response->json();
+        if (isset($roles['data'])) {
+            $roles = $roles['data'];
+        }
+
+        // Si la respuesta falló, enviamos un array vacío para evitar errores de vista
+        $roles = is_array($roles) ? $roles : [];
 
         return view('empleados/usuarios_crear', compact('roles'));
     }
