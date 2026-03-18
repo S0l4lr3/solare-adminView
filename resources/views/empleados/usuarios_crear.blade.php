@@ -14,7 +14,7 @@
             @csrf
 
             @if ($errors->any())
-                <div class="mb-4 p-4 bg-red-100 rounded-lg border border-red-200">
+                <div class="mb-4 p-4 bg-red-100 rounded-lg">
                     <ul class="text-sm text-red-600 list-disc list-inside">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -24,6 +24,7 @@
             @endif
 
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+
                 <div class="sm:col-span-2">
                     <label class="block mb-2 text-sm font-medium text-gray-900">Nombre(s)</label>
                     <input type="text" name="nombre" value="{{ old('nombre') }}"
@@ -72,16 +73,16 @@
                         class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">
                         <option value="">Selecciona un rol</option>
                         @foreach ($roles as $rol)
-                            <option value="{{ $rol['id'] ?? '' }}" {{ old('rol_id') == ($rol['id'] ?? '') ? 'selected' : '' }}>
-                                {{ $rol['nombre'] ?? 'Sin nombre' }}
-                            </option>
+                            <option value="{{ $rol['nombre'] }}
+                                 </option>
                         @endforeach
                     </select>
                 </div>
+
             </div>
 
             <div class="flex gap-3 mt-8 pt-6 border-t border-gray-100">
-                <button type="submit"
+                <button type="POST"
                     class="px-6 py-2.5 text-sm font-medium text-white bg-solare-musgo rounded-lg hover:bg-opacity-90 transition-all shadow-md">
                     Guardar empleado
                 </button>
