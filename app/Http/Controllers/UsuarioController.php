@@ -44,8 +44,17 @@ class UsuarioController extends Controller
             $roles = $roles['data'];
         }
 
-        // Si la respuesta falló, enviamos un array vacío para evitar errores de vista
-        $roles = is_array($roles) ? $roles : [];
+        // Si la respuesta falló o está vacía, usamos roles de respaldo basados en tu BD
+        if (empty($roles)) {
+            $roles = [
+                ['id' => 1, 'nombre' => 'CEO'],
+                ['id' => 2, 'nombre' => 'Administrador'],
+                ['id' => 3, 'nombre' => 'Gerente'],
+                ['id' => 4, 'nombre' => 'Supervisor'],
+                ['id' => 5, 'nombre' => 'Vendedor'],
+                ['id' => 6, 'nombre' => 'Almacenista'],
+            ];
+        }
 
         return view('empleados/usuarios_crear', compact('roles'));
     }

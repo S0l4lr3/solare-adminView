@@ -29,27 +29,27 @@
                 <div class="sm:col-span-2">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre(s)</label>
                     <input type="text" name="nombre" value="{{ $usuario->nombre }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-solare-musgo focus:border-solare-musgo dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         required>
                 </div>
 
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apellido paterno</label>
                     <input type="text" name="apellido_paterno" value="{{ $usuario->apellido_paterno }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-solare-musgo focus:border-solare-musgo dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         required>
                 </div>
 
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apellido materno</label>
                     <input type="text" name="apellido_materno" value="{{ $usuario->apellido_materno }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-solare-musgo focus:border-solare-musgo dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 </div>
 
                 <div class="sm:col-span-2">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo electrónico</label>
                     <input type="email" name="correo" value="{{ $usuario->correo }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-solare-musgo focus:border-solare-musgo dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         required>
                 </div>
 
@@ -59,21 +59,21 @@
                         <span class="text-gray-400 font-normal">(dejar vacío para no cambiar)</span>
                     </label>
                     <input type="password" name="contrasena"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-solare-musgo focus:border-solare-musgo dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         placeholder="Mínimo 8 caracteres">
                 </div>
 
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar contraseña</label>
                     <input type="password" name="contrasena_confirmation"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-solare-musgo focus:border-solare-musgo dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         placeholder="Repite la contraseña">
                 </div>
 
                 <div class="sm:col-span-2">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rol</label>
                     <select name="rol_id"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-solare-musgo focus:border-solare-musgo dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <option value="">Selecciona un rol</option>
                         @foreach ($roles as $rol)
                             <option value="{{ $rol['id'] }}" {{ ($usuario['rol_id'] ?? $usuario->rol_id) == $rol['id'] ? 'selected' : '' }}>
