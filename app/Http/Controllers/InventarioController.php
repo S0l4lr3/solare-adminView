@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 
 class InventarioController extends Controller
 {
+    protected $apiUrl = 'https://solare-backend-production.up.railway.app/api';
+
     /**
      * Muestra el inventario consumiendo el Nodo Backend de Solare.
      */
@@ -20,8 +22,8 @@ class InventarioController extends Controller
         }
 
         // 2. Petición HTTP al Backend (Nodo Central) solicitando el stock
-        // Usamos la URL del servidor local de desarrollo
-        $response = Http::withToken($token)->get('http://solare-backend.railway.internal/api/inventario');
+        // Actualizada a la URL pública embebida
+        $response = Http::withToken($token)->get("{$this->apiUrl}/inventario");
 
         if ($response->successful()) {
             $stock = $response->json();
@@ -30,5 +32,22 @@ class InventarioController extends Controller
 
         // Si el nodo de inventario no responde o rechaza el token
         return view('paginas.Inventario')->with('error', 'No se pudo sincronizar con el nodo de inventario central.');
+    }
+
+    /**
+     * Actualización rápida de stock (si el backend lo permite)
+     */
+    public function updateStock(Request $request, $id)
+    {
+        $token = session('api_token');
+        $response = Http::withToken($token)->put("{$this->apiUrl}/inventario/{$id}", [
+            'cantidad' => $request->cantidad
+        ]);
+
+        if ($response->successful()) {
+            return back()->with('success', 'Inventario actualizado.');
+        }
+
+        return back()->with('error', 'Error al actualizar stock.');
     }
 }

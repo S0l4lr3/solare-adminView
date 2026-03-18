@@ -11,11 +11,12 @@ class UsuarioController extends Controller
 
     public function index(Request $request)
     {
-        // LÍNEAS 12-17: LÓGICA DE BÚSQUEDA Y FILTRO DE ROL
         $busqueda = $request->input('busqueda');
         $rol = $request->input('rol');
+        $token = session('api_token'); // OBTENEMOS EL TOKEN DE SEGURIDAD
 
-        $response = Http::get("{$this->apiUrl}/admin/usuarios", [
+        // El backend tiene la gestión de usuarios bajo el prefijo 'admin'
+        $response = Http::withToken($token)->get("{$this->apiUrl}/admin/usuarios", [
             'busqueda' => $busqueda,
             'rol' => $rol
         ]);
@@ -32,18 +33,20 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-        $response = Http::post("{$this->apiUrl}/admin/usuarios", $request->all());
+        $token = session('api_token');
+        $response = Http::withToken($token)->post("{$this->apiUrl}/admin/usuarios", $request->all());
 
         if ($response->successful()) {
             return redirect()->route('usuarios.index')->with('success', 'Usuario guardado.');
         }
 
-        return back()->with('error', 'Error al guardar el usuario en el backend.');
+        return back()->with('error', 'Error al guardar el usuario en el backend: ' . $response->body());
     }
 
     public function edit($id)
     {
-        $response = Http::get("{$this->apiUrl}/admin/usuarios/{$id}");
+        $token = session('api_token');
+        $response = Http::withToken($token)->get("{$this->apiUrl}/admin/usuarios/{$id}");
         $usuario = $response->successful() ? $response->json() : null;
 
         return view('empleados/usuarios_editar', compact('usuario'));
@@ -51,7 +54,8 @@ class UsuarioController extends Controller
 
     public function update(Request $request, $id)
     {
-        $response = Http::put("{$this->apiUrl}/admin/usuarios/{$id}", $request->all());
+        $token = session('api_token');
+        $response = Http::withToken($token)->put("{$this->apiUrl}/admin/usuarios/{$id}", $request->all());
 
         if ($response->successful()) {
             return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado.');
@@ -60,10 +64,10 @@ class UsuarioController extends Controller
         return back()->with('error', 'Error al actualizar.');
     }
 
-    // LÍNEAS 72-77: MÉTODO PARA CAMBIAR EL ESTATUS DEL USUARIO
     public function toggleEstatus($id)
     {
-        $response = Http::patch("{$this->apiUrl}/admin/usuarios/{$id}/toggle-estatus");
+        $token = session('api_token');
+        $response = Http::withToken($token)->patch("{$this->apiUrl}/admin/usuarios/{$id}/toggle-estatus");
 
         if ($response->successful()) {
             return back()->with('success', 'Estado del usuario actualizado correctamente.');
@@ -74,7 +78,13 @@ class UsuarioController extends Controller
 
     public function destroy($id)
     {
-        $response = Http::delete("{$this->apiUrl}/admin/usuarios/{$id}");
-        return redirect()->route('usuarios.index');
+        $token = session('api_token');
+        $response = Http::withToken($token)->delete("{$this->apiUrl}/admin/usuarios/{$id}");
+        
+        if ($response->successful()) {
+            return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado.');
+        }
+
+        return back()->with('error', 'Error al eliminar.');
     }
 }
