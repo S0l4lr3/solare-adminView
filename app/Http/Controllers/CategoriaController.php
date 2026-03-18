@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class CategoriaController extends Controller
 {
-    protected $apiUrl;
+    protected $apiUrl = 'https://solare-backend-production.up.railway.app/api';
 
     public function index(Request $request)
     {

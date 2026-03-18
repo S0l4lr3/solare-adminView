@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\Http;
 
 class ProductoController extends Controller
 {
-    protected $apiUrl = 'https://solare-backend-production.up.railway.app/api';
+    protected $apiUrl;
+
+    public function __construct()
+    {
+        $this->apiUrl = env('API_URL', 'https://solare-backend-production.up.railway.app/api');
+    }
 
     public function index(Request $request)
     {

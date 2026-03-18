@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\Http;
 
 class UsuarioController extends Controller
 {
-    protected $apiUrl = 'https://solare-backend-production.up.railway.app/api';
+    protected $apiUrl;
+
+    public function __construct()
+    {
+        $this->apiUrl = env('API_URL', 'https://solare-backend-production.up.railway.app/api');
+    }
 
     public function index(Request $request)
     {
@@ -28,7 +33,16 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        return view('empleados/usuarios_crear');
+        $token = session('api_token');
+        
+        // Consultamos los roles disponibles en el backend
+        $response = Http::withToken($token)->get("{$this->apiUrl}/admin/roles");
+        
+        // Si la API no tiene esa ruta específica, podemos usar un fallback 
+        // o verificar si están en otra ruta. Por ahora, intentamos obtenerlos.
+        $roles = $response->successful() ? $response->json() : [];
+
+        return view('empleados/usuarios_crear', compact('roles'));
     }
 
     public function store(Request $request)
