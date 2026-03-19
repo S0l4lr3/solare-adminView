@@ -26,8 +26,10 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        $apiUrl = env('API_URL', 'http://127.0.0.1:8000/api');
+
         // Handshake con el Nodo Backend de Solare
-        $response = Http::post('https://solare-backend-production.up.railway.app/api/login', [
+        $response = Http::post("{$apiUrl}/login", [
             'correo' => $request->email,
             'contrasena' => $request->password,
         ]);
@@ -49,8 +51,10 @@ class AuthController extends Controller
     public function Logout()
     {
         $token = session('api_token');
+        $apiUrl = env('API_URL', 'http://127.0.0.1:8000/api');
+
         if ($token) {
-            Http::withToken($token)->post('https://solare-backend-production.up.railway.app/api/logout');
+            Http::withToken($token)->post("{$apiUrl}/logout");
         }
 
         Session::forget(['api_token', 'user_data']);

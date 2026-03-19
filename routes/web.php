@@ -38,3 +38,6 @@ Route::put('/Inventario/{id}', [InventarioController::class, 'updateStock'])->na
 // Sección de Ventas/Pedidos conectado a la API
 Route::get('/Ventas', [PedidoController::class, 'index'])->name('pedidos.index');
 Route::put('/Ventas/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
+
+//obtener roles
+Route::get('/roles', [UsuarioController::class, 'getRoles'])->name('usuarios.getRoles');

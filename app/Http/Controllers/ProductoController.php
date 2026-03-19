@@ -11,7 +11,7 @@ class ProductoController extends Controller
 
     public function __construct()
     {
-        $this->apiUrl = env('API_URL', 'https://solare-backend-production.up.railway.app/api');
+        $this->apiUrl = env('API_URL', '127.0.0.1:8000/api');
     }
 
     public function index(Request $request)
@@ -43,7 +43,18 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $token = session('api_token');
-        $response = Http::withToken($token)->post("{$this->apiUrl}/productos", $request->all());
+        
+        $pendingRequest = Http::withToken($token);
+
+        if ($request->hasFile('imagen')) {
+            $pendingRequest->attach(
+                'imagen', 
+                file_get_contents($request->file('imagen')->getRealPath()), 
+                $request->file('imagen')->getClientOriginalName()
+            );
+        }
+
+        $response = $pendingRequest->post("{$this->apiUrl}/productos", $request->all());
 
         if ($response->successful()) {
             return redirect()->route('productos.index')->with('success', 'Producto guardado.');
@@ -67,13 +78,28 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $token = session('api_token');
-        $response = Http::withToken($token)->put("{$this->apiUrl}/productos/{$id}", $request->all());
+        
+        $pendingRequest = Http::withToken($token);
+
+        if ($request->hasFile('imagen')) {
+            $pendingRequest->attach(
+                'imagen', 
+                file_get_contents($request->file('imagen')->getRealPath()), 
+                $request->file('imagen')->getClientOriginalName()
+            );
+        }
+
+        // Usamos POST con _method=PUT para compatibilidad con multipart/form-data
+        $data = $request->all();
+        $data['_method'] = 'PUT';
+
+        $response = $pendingRequest->post("{$this->apiUrl}/productos/{$id}", $data);
 
         if ($response->successful()) {
             return redirect()->route('productos.index')->with('success', 'Producto actualizado.');
         }
 
-        return back()->with('error', 'Error al actualizar.');
+        return back()->with('error', 'Error al actualizar: ' . $response->body());
     }
 
     public function toggleEstatus($id)

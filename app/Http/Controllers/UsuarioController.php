@@ -11,7 +11,7 @@ class UsuarioController extends Controller
 
     public function __construct()
     {
-        $this->apiUrl = env('API_URL', 'https://solare-backend-production.up.railway.app/api');
+        $this->apiUrl = env('API_URL', '127.0.0.1:8000/api');
     }
 
     public function index(Request $request)
@@ -55,7 +55,7 @@ class UsuarioController extends Controller
                 ['id' => 6, 'nombre' => 'Almacenista'],
             ];
         }
-
+        //dd($roles);
         return view('empleados/usuarios_crear', compact('roles'));
     }
 

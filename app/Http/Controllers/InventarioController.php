@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class InventarioController extends Controller
 {
-    protected $apiUrl = 'https://solare-backend-production.up.railway.app/api';
+    protected $apiUrl = '127.0.0.1:8000/api';
 
     /**
      * Muestra el inventario consumiendo el Nodo Backend de Solare.

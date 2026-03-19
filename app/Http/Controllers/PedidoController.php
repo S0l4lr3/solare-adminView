@@ -11,7 +11,7 @@ class PedidoController extends Controller
 
     public function __construct()
     {
-        $this->apiUrl = env('API_URL', 'https://solare-backend-production.up.railway.app/api');
+        $this->apiUrl = env('API_URL', '127.0.0.1:8000/api');
     }
 
     /**

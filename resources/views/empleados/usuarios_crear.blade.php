@@ -73,8 +73,7 @@
                         class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">
                         <option value="">Selecciona un rol</option>
                         @foreach ($roles as $rol)
-                            <option value="{{ $rol['nombre'] }}
-                                 </option>
+                            <option value="{{ $rol['id'] }}">{{ $rol['nombre'] }}</option>
                         @endforeach
                     </select>
                 </div>
