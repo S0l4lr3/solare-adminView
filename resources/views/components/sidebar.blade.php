@@ -9,7 +9,7 @@
 
         <ul class="space-y-2 font-medium flex-1">
             <li>
-                <a href="/Dashboard"
+                <a href="/dashboard"
                     class="flex items-center p-3 text-white/50 hover:text-white hover:bg-white/10 group rounded-lg transition">
                     <span class="ms-3 text-sm">Dashboard</span>
                 </a>
