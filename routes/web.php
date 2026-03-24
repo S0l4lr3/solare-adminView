@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\PedidoController;
 
 
 Route::get('/Ventas', function () {
@@ -18,7 +19,11 @@ route::view('/productos', '/paginas/Productos');
 route::view('/categorias', '/paginas/Categorias');
 route::view('/Pedidos', '/paginas/Pedidos');
 
-
+// Imágenes de producto
+Route::get('/productos/{id}/imagenes', [ProductoController::class, 'imagenes'])->name('productos.imagenes');
+Route::post('/productos/{id}/imagenes', [ProductoController::class, 'storeImagenes'])->name('productos.imagenes.store');
+Route::delete('/productos/imagenes/{imagenId}', [ProductoController::class, 'destroyImagen'])->name('productos.imagenes.destroy');
+Route::patch('/productos/imagenes/{imagenId}/principal', [ProductoController::class, 'setPrincipal'])->name('productos.imagenes.principal');
 
 /*
 |--------------------------------------------------------------------------
@@ -41,12 +46,12 @@ Route::put('/productos/{id}', [ProductoController::class, 'update'])->name('prod
 |--------------------------------------------------------------------------
 */
 
-Route::get('/categorias',                         [CategoriaController::class, 'index'])->name('categorias.index');
-Route::get('/categorias/crear',                   [CategoriaController::class, 'create'])->name('categorias.create');
-Route::post('/categorias',                        [CategoriaController::class, 'store'])->name('categorias.store');
-Route::get('/categorias/{id}/editar',             [CategoriaController::class, 'edit'])->name('categorias.edit');
-Route::put('/categorias/{id}',                    [CategoriaController::class, 'update'])->name('categorias.update');
-Route::delete('/categorias/{id}',                 [CategoriaController::class, 'destroy'])->name('categorias.destroy');
+Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
+Route::get('/categorias/crear', [CategoriaController::class, 'create'])->name('categorias.create');
+Route::post('/categorias', [CategoriaController::class, 'store'])->name('categorias.store');
+Route::get('/categorias/{id}/editar', [CategoriaController::class, 'edit'])->name('categorias.edit');
+Route::put('/categorias/{id}', [CategoriaController::class, 'update'])->name('categorias.update');
+Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy'])->name('categorias.destroy');
 
 
 /*
@@ -55,10 +60,20 @@ Route::delete('/categorias/{id}',                 [CategoriaController::class, '
 |--------------------------------------------------------------------------
 */
 
-Route::get('/usuarios',              [UsuarioController::class, 'index'])->name('usuarios.index');
-Route::get('/usuarios/crear',        [UsuarioController::class, 'create'])->name('usuarios.create');
-Route::post('/usuarios',             [UsuarioController::class, 'store'])->name('usuarios.store');
-Route::get('/usuarios/{id}/editar',  [UsuarioController::class, 'edit'])->name('usuarios.edit');
-Route::put('/usuarios/{id}',         [UsuarioController::class, 'update'])->name('usuarios.update');
-Route::delete('/usuarios/{id}',      [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+Route::get('/usuarios/crear', [UsuarioController::class, 'create'])->name('usuarios.create');
+Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
+Route::get('/usuarios/{id}/editar', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+Route::put('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+
+/*
+|--------------------------------------------------------------------------
+| Rutas para los pedidos
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'updateEstado'])->name('pedidos.updateEstado');
+Route::delete('/pedidos/{id}', [PedidoController::class, 'destroy'])->name('pedidos.destroy');
 

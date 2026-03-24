@@ -84,7 +84,7 @@ class ProductoController extends Controller
         $producto = Producto::with('imagenPrincipal')->findOrFail($id);
         $categorias = Categoria::all();
 
-        return view('/productos/paginas/Productos-editar', compact('producto', 'categorias'));
+        return view('/productos/Productos-editar', compact('producto', 'categorias'));
     }
 
     public function update(Request $request, $id)
@@ -146,5 +146,67 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index')
             ->with('success', 'Estatus actualizado.');
+    }
+
+    // Mostrar vista de gestión de imágenes
+    public function imagenes($id)
+    {
+        $producto = Producto::with('imagenes')->findOrFail($id);
+        return view('/productos/Productos-imagenes', compact('producto'));
+    }
+
+    // Subir nuevas imágenes
+    public function storeImagenes(Request $request, $id)
+    {
+        $request->validate([
+            'imagenes' => 'required|array',
+            'imagenes.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $producto = Producto::findOrFail($id);
+        $orden = $producto->imagenes()->max('orden') + 1;
+        $tienePrincipal = $producto->imagenes()->where('es_principal', 1)->exists();
+
+        foreach ($request->file('imagenes') as $file) {
+            $path = $file->store('productos', 'public');
+
+            ImagenProducto::create([
+                'producto_id' => $producto->id,
+                'url' => $path,
+                'es_principal' => !$tienePrincipal ? 1 : 0, // la primera sube como principal si no hay ninguna
+                'orden' => $orden++,
+            ]);
+
+            $tienePrincipal = true;
+        }
+
+        return redirect()->route('productos.imagenes', $id)
+            ->with('success', 'Imágenes agregadas correctamente.');
+    }
+
+    // Eliminar una imagen
+    public function destroyImagen($imagenId)
+    {
+        $imagen = ImagenProducto::findOrFail($imagenId);
+        $productoId = $imagen->producto_id;
+
+        \Storage::disk('public')->delete($imagen->url);
+        $imagen->delete();
+
+        return redirect()->route('productos.imagenes', $productoId)
+            ->with('success', 'Imagen eliminada.');
+    }
+
+    // Marcar como imagen principal
+    public function setPrincipal($imagenId)
+    {
+        $imagen = ImagenProducto::findOrFail($imagenId);
+        $productoId = $imagen->producto_id;
+
+        ImagenProducto::where('producto_id', $productoId)->update(['es_principal' => 0]);
+        $imagen->update(['es_principal' => 1]);
+
+        return redirect()->route('productos.imagenes', $productoId)
+            ->with('success', 'Imagen principal actualizada.');
     }
 }
