@@ -38,9 +38,16 @@
                     </li>
 
                     <li>
-                        <a href="/categorias"
+                        <a href="/productos"
                             class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
                             Categorías
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/productos"
+                            class="flex items-center w-full p-2 pl-11 text-[10px] text-white/30 hover:text-white hover:bg-white/10 rounded-lg italic">
+                            + Gestionar Fotos
                         </a>
                     </li>
                 </ul>

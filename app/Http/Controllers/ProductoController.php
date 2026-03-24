@@ -120,4 +120,56 @@ class ProductoController extends Controller
         $response = Http::withToken($token)->delete("{$this->apiUrl}/productos/{$id}");
         return redirect()->route('productos.index');
     }
+
+    public function gestionarImagenes($id)
+    {
+        $token = session('api_token');
+        
+        // Datos del producto
+        $resProd = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}");
+        $producto = $resProd->successful() ? $resProd->json() : null;
+
+        // Lista de imágenes desde el nuevo endpoint
+        $resImg = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}/imagenes");
+        $imagenes = $resImg->successful() ? $resImg->json()['data'] : [];
+
+        return view('productos/Imagenes-gestionar', compact('producto', 'imagenes'));
+    }
+
+    public function subirImagenes(Request $request, $id)
+    {
+        $token = session('api_token');
+        $pendingRequest = Http::withToken($token);
+
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $index => $file) {
+                $pendingRequest->attach(
+                    "imagenes[$index]", 
+                    file_get_contents($file->getRealPath()), 
+                    $file->getClientOriginalName()
+                );
+            }
+        }
+
+        $pendingRequest->post("{$this->apiUrl}/productos/{$id}/imagenes", [
+            'producto_id' => $id,
+            'es_principal' => $request->has('es_principal') ? 1 : 0
+        ]);
+
+        return back()->with('success', 'Imágenes subidas correctamente.');
+    }
+
+    public function eliminarImagen($id)
+    {
+        $token = session('api_token');
+        Http::withToken($token)->delete("{$this->apiUrl}/imagenes/{$id}");
+        return back()->with('success', 'Imagen eliminada.');
+    }
+
+    public function marcarPrincipal($id)
+    {
+        $token = session('api_token');
+        Http::withToken($token)->patch("{$this->apiUrl}/imagenes/{$id}/principal");
+        return back()->with('success', 'Nueva imagen principal establecida.');
+    }
 }

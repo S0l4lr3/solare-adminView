@@ -129,6 +129,12 @@
                                                     </form>
                                                 </li>
                                                 <li>
+                                                    <a href="{{ route('productos.imagenes', $producto['id']) }}"
+                                                        class="block w-full text-left px-4 py-2 text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                        Galería
+                                                    </a>
+                                                </li>
+                                                <li>
                                                     <a href="{{ route('productos.edit', $producto['id']) }}"
                                                         class="block w-full text-left px-4 py-2 text-amber-400 hover:bg-gray-100 dark:hover:bg-gray-600">
                                                         Editar

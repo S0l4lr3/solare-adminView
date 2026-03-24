@@ -22,6 +22,10 @@ Route::get('/dashboard', function () {return view('paginas.Dashboard');})->name(
 
 // CRUD de Productos conectado a API Railway (de la rama alex)
 Route::resource('productos', ProductoController::class);
+Route::get('productos/{id}/imagenes', [ProductoController::class, 'gestionarImagenes'])->name('productos.imagenes');
+Route::post('productos/{id}/imagenes', [ProductoController::class, 'subirImagenes'])->name('imagenes.store');
+Route::delete('imagenes/{id}', [ProductoController::class, 'eliminarImagen'])->name('imagenes.destroy');
+Route::patch('imagenes/{id}/principal', [ProductoController::class, 'marcarPrincipal'])->name('imagenes.principal');
 Route::patch('productos/{id}/toggle-estatus', [ProductoController::class, 'toggleEstatus'])->name('productos.toggleEstatus');
 
 // CRUD de Categorías conectado a API Railway (de la rama alex)
