@@ -17,9 +17,7 @@ class ProductoController extends Controller
     public function index(Request $request)
     {
         $busqueda = $request->input('busqueda');
-        $token = session('api_token'); // OBTENEMOS EL TOKEN DE LA SESIÓN
-
-        // Enviamos el token con Http::withToken()
+        $token = session('api_token');
         $response = Http::withToken($token)->get("{$this->apiUrl}/productos", [
             'search' => $busqueda
         ]);
@@ -43,18 +41,20 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $token = session('api_token');
-        
-        $pendingRequest = Http::withToken($token);
+        $pendingRequest = Http::withToken($token)->acceptJson();
 
         if ($request->hasFile('imagen')) {
-            $pendingRequest->attach(
-                'imagen', 
-                file_get_contents($request->file('imagen')->getRealPath()), 
+            $pendingRequest = $pendingRequest->attach(
+                'imagen',
+                file_get_contents($request->file('imagen')->getRealPath()),
                 $request->file('imagen')->getClientOriginalName()
             );
         }
 
-        $response = $pendingRequest->post("{$this->apiUrl}/productos", $request->all());
+        $response = $pendingRequest->post(
+            "{$this->apiUrl}/productos",
+            $request->except(['imagen', '_token'])
+        );
 
         if ($response->successful()) {
             return redirect()->route('productos.index')->with('success', 'Producto guardado.');
@@ -78,22 +78,20 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $token = session('api_token');
-        
-        $pendingRequest = Http::withToken($token);
+        $pendingRequest = Http::withToken($token)->acceptJson();
 
         if ($request->hasFile('imagen')) {
-            $pendingRequest->attach(
-                'imagen', 
-                file_get_contents($request->file('imagen')->getRealPath()), 
+            $pendingRequest = $pendingRequest->attach(
+                'imagen',
+                file_get_contents($request->file('imagen')->getRealPath()),
                 $request->file('imagen')->getClientOriginalName()
             );
         }
 
-        // Usamos POST con _method=PUT para compatibilidad con multipart/form-data
-        $data = $request->all();
-        $data['_method'] = 'PUT';
-
-        $response = $pendingRequest->post("{$this->apiUrl}/productos/{$id}", $data);
+        $response = $pendingRequest->post(
+            "{$this->apiUrl}/productos/{$id}",
+            $request->except(['imagen', '_token', '_method'])  // ← excluir _method también
+        );
 
         if ($response->successful()) {
             return redirect()->route('productos.index')->with('success', 'Producto actualizado.');
@@ -124,7 +122,7 @@ class ProductoController extends Controller
     public function gestionarImagenes($id)
     {
         $token = session('api_token');
-        
+
         // Datos del producto
         $resProd = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}");
         $producto = $resProd->successful() ? $resProd->json() : null;
@@ -139,13 +137,13 @@ class ProductoController extends Controller
     public function subirImagenes(Request $request, $id)
     {
         $token = session('api_token');
-        $pendingRequest = Http::withToken($token);
+        $pendingRequest = Http::withToken($token)->acceptJson();
 
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $index => $file) {
                 $pendingRequest->attach(
-                    "imagenes[$index]", 
-                    file_get_contents($file->getRealPath()), 
+                    "imagenes[$index]",
+                    file_get_contents($file->getRealPath()),
                     $file->getClientOriginalName()
                 );
             }

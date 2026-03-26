@@ -22,6 +22,11 @@
                         </ul>
                     </div>
                 @endif
+                @if (session('error'))
+                    <div class="mb-4 p-4 bg-red-100 rounded-lg border border-red-200">
+                        <p class="text-sm text-red-600">{{ session('error') }}</p>
+                    </div>
+                @endif
 
                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                     <div class="sm:col-span-2">
@@ -31,11 +36,18 @@
                             placeholder="Nombre del producto" required>
                     </div>
 
-                    <div class="w-full">
+                    <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900">Precio unitario</label>
                         <input type="number" name="precio_base" value="{{ old('precio_base') }}"
                             class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
                             placeholder="$2999" required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Stock inicial</label>
+                        <input type="number" name="stock" value="{{ old('stock', 0) }}" min="0"
+                            class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
+                            placeholder="0" required>
                     </div>
 
                     <div>
@@ -44,7 +56,8 @@
                             class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">
                             <option value="">Selecciona una categoría</option>
                             @foreach ($categorias as $cat)
-                                <option value="{{ $cat['id'] ?? $cat->id }}" {{ old('categoria_id') == ($cat['id'] ?? $cat->id) ? 'selected' : '' }}>
+                                <option value="{{ $cat['id'] ?? $cat->id }}"
+                                    {{ old('categoria_id') == ($cat['id'] ?? $cat->id) ? 'selected' : '' }}>
                                     {{ $cat['nombre'] ?? $cat->nombre }}
                                 </option>
                             @endforeach
