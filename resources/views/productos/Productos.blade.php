@@ -6,8 +6,7 @@
 @section('actions')
     <a href="{{ route('productos.create') }}"
         class="flex items-center justify-center text-white bg-solare-musgo hover:bg-opacity-90 focus:ring-4 focus:ring-solare-musgo/30 font-medium rounded-lg text-sm px-5 py-2.5 transition-all shadow-sm">
-        <svg class="h-4 w-4 mr-2" fill="currentColor" viewbox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="h-4 w-4 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path clip-rule="evenodd" fill-rule="evenodd"
                 d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
         </svg>
@@ -21,14 +20,15 @@
         <div class="mx-auto max-w-screen-xl">
             <!-- Start coding here -->
             <div class="bg-white relative shadow-sm border border-gray-100 sm:rounded-xl overflow-hidden">
-                <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-5 border-b border-gray-50">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-5 border-b border-gray-50">
                     <div class="w-full md:w-1/2">
                         <form action="{{ route('productos.index') }}" method="GET" class="flex items-center">
                             <label for="simple-search" class="sr-only">Buscar</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg aria-hidden="true" class="w-5 h-5 text-solare-arcilla/60"
-                                        fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-solare-arcilla/60" fill="currentColor"
+                                        viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd"
                                             d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-8.485-8.486L2 8z"
                                             clip-rule="evenodd" />
@@ -65,23 +65,24 @@
 
                                     <td class="px-6 py-4">
                                         @if (isset($producto['full_image_url']))
-                                            <div class="w-12 h-12 rounded-lg border border-gray-100 overflow-hidden shadow-sm">
+                                            <div
+                                                class="w-12 h-12 rounded-lg border border-gray-100 overflow-hidden shadow-sm">
                                                 <img class="w-full h-full object-cover"
-                                                    src="{{ $producto['full_image_url'] }}"
-                                                    alt="{{ $producto['nombre'] }}">
+                                                    src="{{ $producto['full_image_url'] }}" alt="{{ $producto['nombre'] }}">
                                             </div>
                                         @else
-                                            <div class="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center border border-dashed border-gray-200">
+                                            <div
+                                                class="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center border border-dashed border-gray-200">
                                                 <span class="text-[10px] text-gray-400 uppercase">Sin imagen</span>
                                             </div>
                                         @endif
                                     </td>
 
-                                    <th scope="row"
-                                        class="px-6 py-4 font-semibold text-gray-800 whitespace-nowrap">
+                                    <th scope="row" class="px-6 py-4 font-semibold text-gray-800 whitespace-nowrap">
                                         {{ $producto['nombre'] }}</th>
                                     <td class="px-6 py-4">
-                                        <span class="px-2 py-1 bg-solare-arcilla/10 text-solare-arcilla text-[10px] font-bold uppercase rounded">
+                                        <span
+                                            class="px-2 py-1 bg-solare-arcilla/10 text-solare-arcilla text-[10px] font-bold uppercase rounded">
                                             {{ $producto['categoria']['nombre'] ?? 'Sin Categoría' }}
                                         </span>
                                     </td>
@@ -89,8 +90,8 @@
                                         ${{ number_format($producto['precio_base'], 2) }}
                                     </td>
                                     <td class="px-6 py-4 text-right font-medium text-gray-900">
-    {{ $producto['stock'] ?? '—' }}
-</td>
+                                        {{ $producto['stock'] ?? '—' }}
+                                    </td>
                                     <td class="px-6 py-4 font-mono text-xs text-gray-500">{{ $producto['sku_base'] }}</td>
                                     <td class="px-6 py-4 text-center">
                                         @if ($producto['activo'])
@@ -139,7 +140,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('productos.edit', $producto['id']) }}"
+                                                    <a href="{{ route('productos.edit', $producto['id'] ?? $producto['id_producto'] ?? 0) }}"
                                                         class="block w-full text-left px-4 py-2 text-amber-400 hover:bg-gray-100 dark:hover:bg-gray-600">
                                                         Editar
                                                     </a>
