@@ -50,9 +50,7 @@
                                 <th scope="col" class="px-6 py-4">Nombre del Producto</th>
                                 <th scope="col" class="px-6 py-4">Categoría</th>
                                 <th scope="col" class="px-6 py-4 text-right">Precio Base</th>
-                                <td class="px-6 py-4 text-right font-medium text-gray-900">
-    {{ $producto['stock'] ?? '—' }}
-</td>
+                                <th scope="col" class="px-6 py-4 text-right">Stock</th>
                                 <th scope="col" class="px-6 py-4">SKU Base</th>
                                 <th scope="col" class="px-6 py-4 text-center">Estado</th>
                                 <th scope="col" class="px-6 py-4">
