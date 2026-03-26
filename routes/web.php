@@ -34,7 +34,7 @@ Route::resource('categorias', CategoriaController::class);
 // CRUD de Usuarios conectado a API Railway (de la rama alex)
 Route::resource('usuarios', UsuarioController::class);
 Route::patch('usuarios/{id}/toggle-estatus', [UsuarioController::class, 'toggleEstatus'])->name('usuarios.toggleEstatus');
-Route::get('usuarios/{id}/edit', [UsuarioController::class, 'show'])->name('usuarios.edit');
+Route::get('usuarios/{id}/edit', [UsuarioController::class, 'show'])->name('usuarios.edits');
 Route::patch('usuarios/{id}', [UsuarioController::class, 'patch'])->name('usuarios.patch');
 
 // Sección de Inventario conectado a la API
