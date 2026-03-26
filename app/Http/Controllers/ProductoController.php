@@ -88,9 +88,13 @@ class ProductoController extends Controller
             );
         }
 
+        // CÓDIGO CORREGIDO (Front-end)
+        $datosAEnviar = $request->except(['imagen', '_token', '_method']);
+        $datosAEnviar['_method'] = 'PUT'; // <- Añadimos manualmente el método PUT para que la API lo entienda
+
         $response = $pendingRequest->post(
             "{$this->apiUrl}/productos/{$id}",
-            $request->except(['imagen', '_token', '_method'])  // ← excluir _method también
+            $datosAEnviar
         );
 
         if ($response->successful()) {

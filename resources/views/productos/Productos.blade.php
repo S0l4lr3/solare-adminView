@@ -140,7 +140,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('productos.edit', $producto['id']) }}"
+                                                    <a href="{{ route('productos.edit', $producto['id'] ?? $producto['id_producto'] ?? 0) }}"
                                                         class="block w-full text-left px-4 py-2 text-amber-400 hover:bg-gray-100 dark:hover:bg-gray-600">
                                                         Editar
                                                     </a>
