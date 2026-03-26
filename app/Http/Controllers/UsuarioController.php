@@ -31,6 +31,16 @@ class UsuarioController extends Controller
         return view('empleados/usuarios', compact('usuarios', 'busqueda', 'rol'));
     }
 
+    //usuarios por ID
+    public function show($id)
+    {
+        $token = session('api_token');
+        $response = Http::withToken($token)->get("{$this->apiUrl}/admin/usuarios/{$id}");
+        $usuario = $response->successful() ? $response->json() : null;
+
+        return view('empleados/usuarios_editar', compact('usuario'));
+    }
+
     public function create()
     {
         $token = session('api_token');
@@ -71,25 +81,24 @@ class UsuarioController extends Controller
         return back()->with('error', 'Error al guardar el usuario en el backend: ' . $response->body());
     }
 
-    public function edit($id)
-    {
-        $token = session('api_token');
-        $response = Http::withToken($token)->get("{$this->apiUrl}/admin/usuarios/{$id}");
-        $usuario = $response->successful() ? $response->json() : null;
-
-        return view('empleados/usuarios_editar', compact('usuario'));
-    }
 
     public function update(Request $request, $id)
     {
         $token = session('api_token');
-        $response = Http::withToken($token)->put("{$this->apiUrl}/admin/usuarios/{$id}", $request->all());
-
-        if ($response->successful()) {
+        
+        $datosLimpios = $request->except('_token', '_method', 'contrasena_confirmation');
+        //  @dd($datosLimpios);
+        $response = Http::withToken($token)->patch("{$this->apiUrl}/admin/usuarios/{$id}", $datosLimpios);
+        
+        if (!$response->successful()) {
             return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado.');
         }
-
+        if($response->status() === 422){
+            return back()->with('error', 'Error al actualizar.',$response->json()['errors'] ?? []);
+        }
+        
         return back()->with('error', 'Error al actualizar.');
+
     }
 
     public function toggleEstatus($id)
