@@ -102,7 +102,7 @@
                                         class="hidden absolute right-12 mt-0 w-44 bg-white rounded-xl shadow-xl z-50 border border-gray-100 py-1 overflow-hidden">
                                         <ul class="py-1 text-sm text-gray-700">
                                             <li>
-                                                <a href="{{ route('usuarios.edit', $u->id) }}"
+                                                <a href="{{ route('usuarios.patch', $u->id) }}"
                                                     class="block w-full text-left px-4 py-2 text-solare-arcilla hover:bg-gray-50 transition-colors">
                                                     Ver detalles
                                                 </a>

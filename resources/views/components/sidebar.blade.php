@@ -38,7 +38,7 @@
                     </li>
 
                     <li>
-                        <a href="/productos"
+                        <a href="/categorias"
                             class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
                             Categorías
                         </a>

@@ -10,9 +10,10 @@
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
         <h2 class="serif mb-6 text-3xl font-normal text-gray-900 border-b pb-4">Editar Información</h2>
 
-        <form action="{{ route('usuarios.update', $usuario['id'] ?? $usuario->id) }}" method="POST">
+        {{-- @dd($usuario) --}}
+        <form action="{{ route('usuarios.patch', $usuario['usuario']['id'])}}" method="POST">
             @csrf
-            @method('PUT')
+            @method('PATCH')
 
             @if ($errors->any())
                 <div class="mb-4 p-4 bg-red-100 rounded-lg">
@@ -28,27 +29,27 @@
 
                 <div class="sm:col-span-2">
                     <label class="block mb-2 text-sm font-medium text-gray-900">Nombre(s)</label>
-                    <input type="text" name="nombre" value="{{ $usuario['nombre'] ?? $usuario->nombre }}"
+                    <input type="text" name="nombre" value="{{ $usuario['usuario']['nombre'] ?? $usuario->nombre }}"
                         class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
                         required>
                 </div>
 
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900">Apellido paterno</label>
-                    <input type="text" name="apellido_paterno" value="{{ $usuario['apellido_paterno'] ?? $usuario->apellido_paterno }}"
+                    <input type="text" name="apellido_paterno" value="{{ $usuario['usuario']['apellido_paterno'] ?? $usuario->apellido_paterno }}"
                         class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
                         required>
                 </div>
 
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900">Apellido materno</label>
-                    <input type="text" name="apellido_materno" value="{{ $usuario['apellido_materno'] ?? $usuario->apellido_materno }}"
+                    <input type="text" name="apellido_materno" value="{{ $usuario['usuario']['apellido_materno'] ?? $usuario->apellido_materno ?? '' }}"
                         class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">
                 </div>
 
                 <div class="sm:col-span-2">
                     <label class="block mb-2 text-sm font-medium text-gray-900">Correo electrónico</label>
-                    <input type="email" name="correo" value="{{ $usuario['correo'] ?? $usuario->correo }}"
+                    <input type="email" name="correo" value="{{ $usuario['usuario']['correo'] ?? $usuario->correo }}"
                         class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
                         required>
                 </div>
@@ -75,9 +76,9 @@
                     <select name="rol_id"
                         class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">
                         <option value="">Selecciona un rol</option>
-                        @foreach ($roles as $rol)
-                            <option value="{{ $rol['id'] ?? '' }}" {{ (($usuario['rol_id'] ?? $usuario->rol_id) == ($rol['id'] ?? '')) ? 'selected' : '' }}>
-                                {{ $rol['nombre'] ?? 'Sin nombre' }}
+                        @foreach ($usuario['roles'] as $rol)
+                            <option value="{{ $rol['id'] ?? '' }}" {{ (($usuario['usuario']['rol_id'] ?? $usuario->rol_id) == ($rol['id'] ?? '')) ? 'selected' : '' }}>
+                                {{ $rol['nombre'] ?? 'Sin rol' }}
                             </option>
                         @endforeach
                     </select>
