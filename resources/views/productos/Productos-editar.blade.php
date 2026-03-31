@@ -6,51 +6,67 @@
 
 @section('content')
 
-<section class="bg-[#f7f5f2]">
-    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-        <h2 class="serif mb-6 text-3xl font-normal text-gray-900 border-b pb-4">Actualizar Información</h2>
+    <section class="bg-[#f7f5f2]">
+        <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+            <h2 class="serif mb-6 text-3xl font-normal text-gray-900 border-b pb-4">Actualizar Información</h2>
 
-        <form action="{{ route('productos.update', $producto['id'] ?? $producto->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+            <form action="{{ route('productos.update', $producto['id'] ?? $producto->id) }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-            @if ($errors->any())
-                <div class="mb-4 p-4 bg-red-100 rounded-lg border border-red-200">
-                    <ul class="text-sm text-red-600 list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+                @if ($errors->any())
+                    <div class="mb-4 p-4 bg-red-100 rounded-lg border border-red-200">
+                        <ul class="text-sm text-red-600 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="mb-4 p-4 bg-red-100 rounded-lg border border-red-200">
+                        <p class="text-sm text-red-600">{{ session('error') }}</p>
+                    </div>
+                @endif
 
-            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
 
-                <div class="sm:col-span-2">
-                    <label class="block mb-2 text-sm font-medium text-gray-900">Nombre del producto</label>
-                    <input type="text" name="nombre" value="{{ $producto['nombre'] ?? $producto->nombre }}"
-                        class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
-                        required>
-                </div>
+                    <div class="sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Nombre del producto</label>
+                        <input type="text" name="nombre" value="{{ $producto['nombre'] ?? $producto->nombre }}"
+                            class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
+                            required>
+                    </div>
 
-                <div class="w-full">
-                    <label class="block mb-2 text-sm font-medium text-gray-900">Precio unitario</label>
-                    <input type="number" name="precio_base" value="{{ $producto['precio_base'] ?? $producto->precio_base }}"
-                        class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
-                        required>
-                </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Precio unitario</label>
+                        <input type="number" name="precio_base"
+                            value="{{ $producto['precio_base'] ?? $producto->precio_base }}"
+                            class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
+                            required>
+                    </div>
 
-                <div>
-                    <label class="block mb-2 text-sm font-medium text-gray-900">Categoría</label>
-                    <select name="categoria_id"
-                        class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">
-                        @foreach ($categorias as $cat)
-                            <option value="{{ $cat['id'] ?? $cat->id }}" {{ ($producto['categoria_id'] ?? $producto->categoria_id) == ($cat['id'] ?? $cat->id) ? 'selected' : '' }}>
-                                {{ $cat['nombre'] ?? $cat->nombre }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Stock</label>
+                        <input type="number" name="stock" min="0"
+                            value="{{ $producto['stock'] ?? $producto->stock }}"
+                            class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none"
+                            required>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Categoría</label>
+                        <select name="categoria_id"
+                            class="bg-gray-50 border border-solare-musgo text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">
+                            @foreach ($categorias as $cat)
+                                <option value="{{ $cat['id'] ?? $cat->id }}"
+                                    {{ ($producto['categoria_id'] ?? $producto->categoria_id) == ($cat['id'] ?? $cat->id) ? 'selected' : '' }}>
+                                    {{ $cat['nombre'] ?? $cat->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
                 <div class="sm:col-span-2">
                     <label class="block mb-2 text-sm font-medium text-gray-900">SKU</label>
@@ -88,47 +104,47 @@
                     </div>
                 </div>
 
-                <div class="sm:col-span-2">
-                    <label class="block mb-2 text-sm font-medium text-gray-900">Descripción</label>
-                    <textarea name="descripcion" rows="8"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-solare-musgo focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">{{ $producto['descripcion'] ?? $producto->descripcion }}</textarea>
+                    <div class="sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">Descripción</label>
+                        <textarea name="descripcion" rows="8"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-solare-musgo focus:ring-2 focus:ring-solare-musgo focus:border-solare-musgo outline-none">{{ $producto['descripcion'] ?? $producto->descripcion }}</textarea>
+                    </div>
                 </div>
-            </div>
 
-            <div class="flex gap-3 mt-8 pt-6 border-t border-gray-100">
-                <button type="submit"
-                    class="px-6 py-2.5 text-sm font-medium text-white bg-solare-musgo rounded-lg hover:bg-opacity-90 transition-all shadow-md">
-                    Actualizar Producto
-                </button>
-                <a href="{{ route('productos.index') }}"
-                    class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
-                    Cancelar
-                </a>
-            </div>
-        </form>
-    </div>
-</section>
+                <div class="flex gap-3 mt-8 pt-6 border-t border-gray-100">
+                    <button type="submit"
+                        class="px-6 py-2.5 text-sm font-medium text-white bg-solare-musgo rounded-lg hover:bg-opacity-90 transition-all shadow-md">
+                        Actualizar Producto
+                    </button>
+                    <a href="{{ route('productos.index') }}"
+                        class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
 
-<script>
-    const dropzone = document.getElementById('dropzone');
-    const fileInput = document.getElementById('dropzone-file');
-    const preview = document.getElementById('preview');
-    const placeholder = document.getElementById('dropzone-placeholder');
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('dropzone-file');
+        const preview = document.getElementById('preview');
+        const placeholder = document.getElementById('dropzone-placeholder');
 
-    dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('click', () => fileInput.click());
 
-    fileInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
+        });
+    </script>
 
 @endsection
