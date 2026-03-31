@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\materialesController;
 
 
 // login y ruta principal
@@ -33,6 +34,7 @@ Route::resource('categorias', CategoriaController::class);
 
 // CRUD de Usuarios conectado a API Railway (de la rama alex)
 Route::resource('usuarios', UsuarioController::class);
+Route::get('/clientes', [UsuarioController::class, 'indexc'])->name('clientes.index');
 Route::patch('usuarios/{id}/toggle-estatus', [UsuarioController::class, 'toggleEstatus'])->name('usuarios.toggleEstatus');
 Route::get('usuarios/{id}/edit', [UsuarioController::class, 'show'])->name('usuarios.edits');
 Route::patch('usuarios/{id}', [UsuarioController::class, 'patch'])->name('usuarios.patch');
@@ -44,6 +46,12 @@ Route::put('/Inventario/{id}', [InventarioController::class, 'updateStock'])->na
 // Sección de Ventas/Pedidos conectado a la API
 Route::get('/Ventas', [PedidoController::class, 'index'])->name('pedidos.index');
 Route::put('/Ventas/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
+
+// CRUD de Materiales
+Route::resource('materiales', materialesController::class);
+Route::get('materiales/{id}/edit', [materialesController::class, 'show'])->name('materiales.edits');
+Route::put('materiales/{id}', [materialesController::class, 'update'])->name('materiales.update');
+Route::delete('materiales/{id}', [materialesController::class, 'destroy'])->name('materiales.destroy');
 
 //obtener roles
 Route::get('/roles', [UsuarioController::class, 'getRoles'])->name('usuarios.getRoles');

@@ -31,6 +31,24 @@ class UsuarioController extends Controller
         return view('empleados/usuarios', compact('usuarios', 'busqueda', 'rol'));
     }
 
+    //clientes
+        public function indexc(Request $request)
+    {
+        $busqueda = $request->input('busqueda');
+        $rol = $request->input('rol');
+        $token = session('api_token'); // OBTENEMOS EL TOKEN DE SEGURIDAD
+
+        // El backend tiene la gestión de usuarios bajo el prefijo 'admin'
+        $response = Http::withToken($token)->get("{$this->apiUrl}/admin/usuarios", [
+            'busqueda' => $busqueda,
+            'rol' => $rol
+        ]);
+
+        $usuarios = $response->successful() ? $response->json() : [];
+
+        return view('clientes.usuariosclientes', compact('usuarios', 'busqueda', 'rol'));
+    }
+
     //usuarios por ID
     public function show($id)
     {

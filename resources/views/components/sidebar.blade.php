@@ -31,16 +31,23 @@
 
                 <ul id="dropdown-productos" class="hidden py-2 space-y-2">
                     <li>
-                        <a href="/productos"
+                        <a href="{{ route('productos.index') }}"
                             class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
                             Productos
                         </a>
                     </li>
 
                     <li>
-                        <a href="/productos"
+                        <a href="{{ route('categorias.index') }}"
                             class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
                             Categorías
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('materiales.index') }}"
+                            class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
+                            Materiales
                         </a>
                     </li>
 
@@ -75,7 +82,7 @@
 
                 <ul id="dropdown-Usuarios" class="hidden py-2 space-y-2">
                     <li>
-                        <a href="/#"
+                        <a href="{{ route('clientes.index') }}"
                             class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
                             Clientes
                         </a>

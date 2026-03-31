@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Empleados')
-@section('label', 'Gestión de Personal')
-@section('header_title', 'Administración de Empleados')
+@section('title', 'Clientes')
+@section('label', 'Gestión de Clientes')
+@section('header_title', 'Administración de Clientes')
 
 @section('actions')
     <a href="{{ route('usuarios.create') }}"
@@ -10,7 +10,7 @@
         <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
         </svg>
-        Nuevo Empleado
+        Nuevo Cliente
     </a>
 @endsection
 
@@ -70,7 +70,7 @@
                             @php
                                 $u = (object) $usuario;
                             @endphp
-                            @if($usuario['rol']['id'] != 3) 
+                            @if($usuario['rol']['id'] == 3) 
                             <tr class="hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 text-xs font-medium text-gray-400">#{{ $u->id }}</td>
                                 <td class="px-6 py-4 font-semibold text-gray-800">
@@ -80,6 +80,7 @@
                                 <td class="px-6 py-4 text-center">
                                     <span class="px-2 py-1 bg-solare-arcilla/10 text-solare-arcilla text-[10px] font-bold uppercase rounded">
                                             {{ is_object($u->rol) ? $u->rol->nombre : ($u->rol['nombre']) }}
+                                             
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -117,8 +118,9 @@
                                                         class="block w-full text-left px-4 py-2 text-red-500 hover:bg-red-50 transition-colors">
                                                         Eliminar
                                                     </button>
+                                                    
                                                     @endif
-
+                                                    
                                                 </form>
                                             </li>
                                         </ul>

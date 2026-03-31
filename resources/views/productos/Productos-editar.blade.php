@@ -68,7 +68,7 @@
                     @if ($imgUrl)
                         <div class="mb-3">
                             <p class="text-xs text-gray-500 mb-1">Imagen actual:</p>
-                            <img src="{{ asset('storage/' . $imgUrl) }}"
+                            <img src="{{ env('IMAGE_URL') . $imgUrl }}"
                                 class="h-32 object-contain rounded border border-gray-200">
                         </div>
                     @endif
