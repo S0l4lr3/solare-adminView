@@ -100,9 +100,10 @@
 
         <div class="pt-4 border-t border-white/10">
             <div class="flex items-center gap-3 px-4 py-2 text-white">
-                <div class="w-8 h-8 rounded-full bg-solare-arcilla flex items-center justify-center font-bold">B</div>
+                <div class="w-8 h-8 rounded-full bg-solare-arcilla flex items-center justify-center font-bold">A</div>
                 <div>
-                    <p class="text-xs font-medium">Hola, </p>
+                    {{-- @dd(session('user_data')) --}}
+                    <p class="text-xs font-medium">Hola, {{ session('user_data')['nombre'] }}</p>
                     <a href="/login" class="text-[10px] text-white/30 hover:text-white">Salir</a>
                 </div>
             </div>
