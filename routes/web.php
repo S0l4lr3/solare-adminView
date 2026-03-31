@@ -50,8 +50,8 @@ Route::put('/Ventas/{id}', [PedidoController::class, 'update'])->name('pedidos.u
 // CRUD de Materiales
 Route::resource('materiales', materialesController::class);
 Route::get('materiales/{id}/edit', [materialesController::class, 'show'])->name('materiales.edits');
-Route::put('materiales/{id}', [materialesController::class, 'update'])->name('materiales.update');
-Route::delete('materiales/{id}', [materialesController::class, 'destroy'])->name('materiales.destroy');
+Route::put('materiales/{id}', [materialesController::class, 'update'])->name('materiales.updates');
+Route::delete('materiales/{id}', [materialesController::class, 'destroy'])->name('materiales.destroys');
 
 //obtener roles
 Route::get('/roles', [UsuarioController::class, 'getRoles'])->name('usuarios.getRoles');
