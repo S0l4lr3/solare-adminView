@@ -81,7 +81,7 @@
                                                 class="px-4 py-2 text-[10px] font-bold uppercase text-gray-400 tracking-widest border-b border-gray-50">
                                                 Cambiar estado de envío
                                             </p>
-                                            @foreach (['procesando pedido', 'pedido enviado', 'pedido entregado'] as $estado)
+                                            @foreach (['procesando', 'en_camino', 'entregado', 'cancelado'] as $estado)
                                                 <form action="{{ route('pedidos.estadoEnvio', $pedido['id']) }}"
                                                     method="POST">
                                                     @csrf @method('PUT')
