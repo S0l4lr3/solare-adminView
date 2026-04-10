@@ -20,7 +20,7 @@ class PedidoController extends Controller
         $response = Http::withToken($token)->acceptJson()->get("{$this->apiUrl}/pedidos");
         $pedidos = $response->successful() ? $response->json() : [];
 
-        return view('pedidos/Pedidos', compact('pedidos'));
+        return view('pedidos/pedidos', compact('pedidos'));
     }
 
     public function actualizarEstadoEnvio(Request $request, $id)
