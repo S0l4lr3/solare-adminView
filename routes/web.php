@@ -47,8 +47,8 @@ Route::get('/Inventario', [InventarioController::class, 'index'])->name('inventa
 Route::put('/Inventario/{id}', [InventarioController::class, 'updateStock'])->name('inventario.update');
 
 // Sección de Ventas/Pedidos conectado a la API
-Route::get('/Ventas', [PedidoController::class, 'index'])->name('pedidos.index');
-Route::put('/Ventas/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
+// Route::get('/Ventas', [PedidoController::class, 'index'])->name('pedidos.index');
+// Route::put('/Ventas/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
 
 // CRUD de Materiales
 Route::resource('materiales', materialesController::class);
