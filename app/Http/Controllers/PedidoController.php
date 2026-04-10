@@ -14,40 +14,27 @@ class PedidoController extends Controller
         $this->apiUrl = env('API_URL', '127.0.0.1:8000/api');
     }
 
-    /**
-     * Muestra el historial de pedidos consumiendo el Nodo Backend.
-     */
-    public function index(Request $request)
+    public function index()
     {
         $token = session('api_token');
-
-        if (!$token) {
-            return redirect()->route('login')->with('error', 'Sesión expirada.');
-        }
-
-        // Petición al Backend solicitando pedidos de la mueblería
-        $response = Http::withToken($token)->get("{$this->apiUrl}/pedidos");
-
+        $response = Http::withToken($token)->acceptJson()->get("{$this->apiUrl}/pedidos");
         $pedidos = $response->successful() ? $response->json() : [];
 
-        // Cambiamos la vista de estática a dinámica para Ventas/Pedidos
-        return view('paginas.Ventas', compact('pedidos'));
+        return view('pedidos/Pedidos', compact('pedidos'));
     }
 
-    /**
-     * Actualizar estado del pedido (ej: Entregado, Cancelado)
-     */
-    public function update(Request $request, $id)
+    public function actualizarEstadoEnvio(Request $request, $id)
     {
         $token = session('api_token');
-        $response = Http::withToken($token)->put("{$this->apiUrl}/pedidos/{$id}", [
-            'estado' => $request->estado
-        ]);
+        $response = Http::withToken($token)->acceptJson()->put(
+            "{$this->apiUrl}/pedidos/{$id}",
+            ['estado_envio' => $request->estado_envio]
+        );
 
         if ($response->successful()) {
-            return back()->with('success', 'Pedido actualizado correctamente.');
+            return back()->with('success', 'Estado de envío actualizado.');
         }
 
-        return back()->with('error', 'No se pudo actualizar el pedido.');
+        return back()->with('error', 'Error al actualizar: ' . $response->body());
     }
 }

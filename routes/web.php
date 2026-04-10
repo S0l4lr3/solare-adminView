@@ -9,6 +9,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\materialesController;
 
+//route::view('pedidos','/pedidos/pedidos');
 
 // login y ruta principal
 Route::get('/', [AuthController::class, 'Formulario'])->name('login');
@@ -19,7 +20,9 @@ Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'Registro'])->name('register');
 // -----------------------------------------------------------------------------
 
-Route::get('/dashboard', function () {return view('paginas.Dashboard');})->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('paginas.Dashboard');
+})->name('dashboard');
 
 // CRUD de Productos conectado a API Railway (de la rama alex)
 Route::resource('productos', ProductoController::class);
@@ -55,3 +58,7 @@ Route::delete('materiales/{id}', [materialesController::class, 'destroy'])->name
 
 //obtener roles
 Route::get('/roles', [UsuarioController::class, 'getRoles'])->name('usuarios.getRoles');
+
+//pedidos
+Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+Route::put('/pedidos/{id}/estado-envio', [PedidoController::class, 'actualizarEstadoEnvio'])->name('pedidos.estadoEnvio');
