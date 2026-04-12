@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\Http;
 
 class InventarioController extends Controller
 {
-    protected $apiUrl = '127.0.0.1:8000/api';
+    protected $apiUrl;
+
+    public function __construct()
+    {
+        $this->apiUrl = env('API_URL', 'http://127.0.0.1:8000/api');
+    }
 
     /**
      * Muestra el inventario consumiendo el Nodo Backend de Solare.
@@ -26,7 +31,7 @@ class InventarioController extends Controller
         $response = Http::withToken($token)->get("{$this->apiUrl}/inventario");
 
         if ($response->successful()) {
-            $stock = $response->json();
+            $stock = $response->json()['data'] ?? [];
             return view('paginas.Inventario', compact('stock'));
         }
 

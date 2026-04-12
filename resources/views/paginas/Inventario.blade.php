@@ -47,27 +47,27 @@
                 @php $item = (array)$item; @endphp
                 <tr class="hover:bg-[#faf9f7] transition">
                     <td class="px-6 py-4 font-mono text-[11px] text-[#958174] font-bold">
-                        SL-{{ str_pad($item['variante_id'], 3, '0', STR_PAD_LEFT) }}
+                        SL-{{ str_pad($item['id'], 3, '0', STR_PAD_LEFT) }}
                     </td>
-                    <td class="px-6 py-4 font-medium text-gray-900">{{ $item['producto'] }}</td>
-                    <td class="px-6 py-4 uppercase text-[10px] tracking-wider">{{ $item['material'] }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900">{{ $item['producto']['nombre'] ?? 'Sin nombre' }}</td>
+                    <td class="px-6 py-4 uppercase text-[10px] tracking-wider">{{ $item['material']['nombre'] ?? 'General' }}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
                             <div class="w-16 bg-gray-100 h-1 rounded-full">
-                                <div class="h-1 rounded-full {{ $item['stock_total'] > 5 ? 'bg-sage-green' : 'bg-orange-400' }}" 
-                                     style="width: {{ min(($item['stock_total'] / 20) * 100, 100) }}%"></div>
+                                <div class="h-1 rounded-full {{ $item['existencias'] > 5 ? 'bg-sage-green' : 'bg-orange-400' }}" 
+                                     style="width: {{ min(($item['existencias'] / 20) * 100, 100) }}%"></div>
                             </div>
-                            <span class="font-bold text-gray-900">{{ $item['stock_total'] }}</span>
+                            <span class="font-bold text-gray-900">{{ $item['existencias'] }}</span>
                         </div>
                     </td>
                     <td class="px-6 py-4 font-semibold text-gray-900">
                         {{-- El precio lo tomamos de una columna por defecto si no viene en esta vista --}}
-                        ${{ number_format($item['precio_venta'] ?? 0, 2) }}
+                        ${{ number_format($item['producto']['precio_base'] ?? 0, 2) }}
                     </td>
                     <td class="px-6 py-4">
-                        @if($item['stock_total'] > 5)
+                        @if($item['existencias'] > 5)
                             <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2.5 py-1 rounded">DISPONIBLE</span>
-                        @elseif($item['stock_total'] > 0)
+                        @elseif($item['existencias'] > 0)
                             <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2.5 py-1 rounded">CRÍTICO</span>
                         @else
                             <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2.5 py-1 rounded">SIN STOCK</span>
