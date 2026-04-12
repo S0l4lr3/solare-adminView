@@ -151,7 +151,7 @@ class ProductoController extends Controller
 
         // Construye la URL completa de cada imagen
         $imagenes = array_map(function ($img) {
-            $img['full_image_url'] = asset('storage/' . $img['url']);
+            $img['full_image_url'] = env('IMAGE_URL') . $img['url'];
             return $img;
         }, $imagenes);
 
