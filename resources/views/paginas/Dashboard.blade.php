@@ -2,13 +2,43 @@
 
 @section('title', 'Dashboard')
 @section('label', 'Panel General')
-@section('header_title', 'Bienvenido, Admin')
-
-@section('actions')
-@endsection
+@section('header_title', 'Bienvenido, ' . (session('user')['nombre'] ?? 'Administrador'))
 
 @section('content')
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+    {{-- ALERTAS CRÍTICAS (Monitor de Almacén) --}}
+    @if(($dashboard['ajustes_manuales_24h'] ?? 0) > 0 || count($dashboard['stock_critico'] ?? []) > 0)
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        @if(($dashboard['ajustes_manuales_24h'] ?? 0) > 0)
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 shadow-sm animate-pulse">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <span class="text-red-500 text-xl">⚠️</span>
+                </div>
+                <div class="ml-3">
+                    <p class="text-[10px] font-bold text-red-700 uppercase tracking-widest">Auditoría de Almacén Requerida</p>
+                    <p class="text-sm text-red-600 font-medium">Se detectaron {{ $dashboard['ajustes_manuales_24h'] }} ajustes manuales de stock en las últimas 24 horas.</p>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        @if(count($dashboard['stock_critico'] ?? []) > 0)
+        <div class="bg-orange-50 border-l-4 border-orange-500 p-4 shadow-sm">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <span class="text-orange-500 text-xl">📉</span>
+                </div>
+                <div class="ml-3">
+                    <p class="text-[10px] font-bold text-orange-700 uppercase tracking-widest">Alerta de Ventas Perdidas</p>
+                    <p class="text-sm text-orange-600 font-medium">{{ count($dashboard['stock_critico']) }} productos tienen stock crítico (menos de 3 unidades).</p>
+                </div>
+            </div>
+        </div>
+        @endif
+    </div>
+    @endif
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         @php
             $stats = [
                 [
@@ -18,10 +48,16 @@
                     'c' => '#958174',
                 ],
                 [
-                    'l' => 'Piezas en stock',
+                    'l' => 'Stock Real',
                     'v' => $dashboard['piezas_stock'] ?? '0',
-                    'd' => 'productos registrados',
+                    'd' => 'Activos: ' . ($dashboard['valor_inventario'] ?? '$0'),
                     'c' => '#798273',
+                ],
+                [
+                    'l' => 'Stock Crítico',
+                    'v' => count($dashboard['stock_critico'] ?? []),
+                    'd' => 'piezas por agotar',
+                    'c' => '#c2410c',
                 ],
                 [
                     'l' => 'Pedidos activos',
