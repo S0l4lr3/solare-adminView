@@ -123,17 +123,37 @@ class ProductoController extends Controller
         return redirect()->route('productos.index');
     }
 
+    // public function gestionarImagenes($id)
+    // {
+    //     $token = session('api_token');
+
+    //     // Datos del producto
+    //     $resProd = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}");
+    //     $producto = $resProd->successful() ? $resProd->json() : null;
+
+    //     // Lista de imágenes desde el nuevo endpoint
+    //     $resImg = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}/imagenes");
+    //     dd($resImg->json());
+    //     $imagenes = $resImg->successful() ? $resImg->json()['data'] : [];
+
+    //     return view('productos/Imagenes-gestionar', compact('producto', 'imagenes'));
+    // }
+
     public function gestionarImagenes($id)
     {
         $token = session('api_token');
 
-        // Datos del producto
         $resProd = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}");
         $producto = $resProd->successful() ? $resProd->json() : null;
 
-        // Lista de imágenes desde el nuevo endpoint
         $resImg = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}/imagenes");
         $imagenes = $resImg->successful() ? $resImg->json()['data'] : [];
+
+        // Construye la URL completa de cada imagen
+        $imagenes = array_map(function ($img) {
+            $img['full_image_url'] = asset('storage/' . $img['url']);
+            return $img;
+        }, $imagenes);
 
         return view('productos/Imagenes-gestionar', compact('producto', 'imagenes'));
     }

@@ -97,7 +97,7 @@
                     @forelse($imagenes as $img)
                         <div
                             class="relative group aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50">
-                            <img src="{{ asset('storage/' . $img['url']) }}" class="w-full h-full object-cover">
+                            <img src="{{ $img['full_image_url'] }}" class="w-full h-full object-cover">
 
                             <!-- Overlay de acciones -->
                             <div
