@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\materialesController;
+use App\Http\Controllers\DashboardController;
 
 //route::view('pedidos','/pedidos/pedidos');
 
@@ -62,3 +63,6 @@ Route::get('/roles', [UsuarioController::class, 'getRoles'])->name('usuarios.get
 //pedidos
 Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
 Route::put('/pedidos/{id}/estado-envio', [PedidoController::class, 'actualizarEstadoEnvio'])->name('pedidos.estadoEnvio');
+
+//dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

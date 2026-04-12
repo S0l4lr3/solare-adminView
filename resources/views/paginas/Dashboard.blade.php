@@ -8,13 +8,27 @@
 @endsection
 
 @section('content')
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         @php
             $stats = [
-                ['l' => 'Ventas este mes', 'v' => '$0', 'd' => '+12%', 'c' => '#958174'],
-                ['l' => 'Piezas en stock', 'v' => '0', 'd' => '+5%', 'c' => '#798273'],
-                ['l' => 'Pedidos activos', 'v' => '0', 'd' => '-3', 'c' => '#958174'],
-                ['l' => 'Clientes nuevos', 'v' => '0', 'd' => '+8%', 'c' => '#798273'],
+                [
+                    'l' => 'Ventas este mes',
+                    'v' => $dashboard['ventas_mes']['cantidad'] ?? '0',
+                    'd' => $dashboard['ventas_mes']['total'] ?? '$0',
+                    'c' => '#958174',
+                ],
+                [
+                    'l' => 'Piezas en stock',
+                    'v' => $dashboard['piezas_stock'] ?? '0',
+                    'd' => 'productos registrados',
+                    'c' => '#798273',
+                ],
+                [
+                    'l' => 'Pedidos activos',
+                    'v' => $dashboard['pedidos_activos'] ?? '0',
+                    'd' => 'sin entregar',
+                    'c' => '#958174',
+                ],
             ];
         @endphp
 
@@ -22,7 +36,7 @@
             <div class="bg-white p-6 border border-gray-100 shadow-sm" style="border-top: 3px solid {{ $s['c'] }}">
                 <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">{{ $s['l'] }}</p>
                 <h3 class="serif text-3xl font-normal text-gray-900">{{ $s['v'] }}</h3>
-                <p class="text-[11px] text-green-600 font-medium mt-2">{{ $s['d'] }} vs mes anterior</p>
+                <p class="text-[11px] text-green-600 font-medium mt-2">{{ $s['d'] }}</p>
             </div>
         @endforeach
     </div>
@@ -38,20 +52,38 @@
                         <tr>
                             <th class="px-6 py-3">ID</th>
                             <th class="px-6 py-3">Cliente</th>
+                            <th class="px-6 py-3">Producto</th>
+                            <th class="px-6 py-3 text-center">Cant.</th>
                             <th class="px-6 py-3">Total</th>
                             <th class="px-6 py-3">Estado</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 font-bold text-[#958174]">#SL-0891</td>
-                            <td class="px-6 py-4 text-gray-900">Hotel Marquesa</td>
-                            <td class="px-6 py-4 font-semibold">$18,200</td>
-                            <td class="px-6 py-4">
-                                <span
-                                    class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded">ENTREGADO</span>
-                            </td>
-                        </tr>
+                        @forelse ($dashboard['pedidos_recientes'] as $detalle)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 font-bold text-[#958174]">#{{ $detalle['pedido_id'] }}</td>
+                                <td class="px-6 py-4 text-gray-900">{{ $detalle['cliente'] }}</td>
+                                <td class="px-6 py-4 text-gray-600">{{ $detalle['producto'] }}</td>
+
+                                <td class="px-6 py-4 font-font-semibold text-center">
+                                    {{ $detalle['cantidad'] }}
+                                </td>
+
+                                <td class="px-6 py-4 font-semibold">{{ $detalle['total'] }}</td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">
+                                        {{ $detalle['estado_envio'] }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-6 text-center text-gray-400 text-xs">
+                                    Sin pedidos recientes
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -60,14 +92,33 @@
         <div class="bg-white border border-gray-100 shadow-sm p-5">
             <h4 class="serif text-lg mb-4">Más vendidos</h4>
             <div class="space-y-4">
-                <div class="flex items-center gap-4 bg-gray-50 p-3">
-                    <span class="text-2xl">🛋️</span>
-                    <div class="flex-1">
-                        <p class="text-xs font-bold">Sofá Málaga</p>
-                        <p class="text-[10px] text-gray-400">$4,200</p>
+
+                @forelse($dashboard['mas_vendidos'] as $index => $producto)
+                    <div class="flex items-center gap-4 bg-gray-50 p-3">
+                        <span class="text-2xl">{{ $index === 0 ? '🏆' : '🔥' }}</span>
+
+                        <div class="flex-1">
+                            <p class="text-xs font-bold">{{ $producto['nombre'] }}</p>
+                            <p class="text-[10px] text-gray-400">
+                                Vendidos: {{ $producto['total_vendido'] }} piezas
+                            </p>
+                        </div>
+
+                        <div class="text-right flex flex-col items-end">
+                            <span class="bg-[#958174] text-white text-[8px] px-2 py-0.5 rounded uppercase font-bold mb-1">
+                                TOP {{ $index + 1 }}
+                            </span>
+                            <span class="text-[10px] font-bold text-gray-600">
+                                ${{ number_format($producto['precio_referencia'], 2) }}
+                            </span>
+                        </div>
                     </div>
-                    <span class="bg-[#958174] text-white text-[8px] px-2 py-0.5 rounded uppercase font-bold">TOP</span>
-                </div>
+                @empty
+                    <div class="p-3 text-center text-gray-400 text-xs">
+                        <p>Aún no hay suficientes datos de ventas.</p>
+                    </div>
+                @endforelse
+
             </div>
         </div>
     </div>
