@@ -33,7 +33,14 @@
                     <li>
                         <a href="{{ route('productos.index') }}"
                             class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
-                            Productos
+                            Catálogo
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/Inventario"
+                            class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
+                            Stock en Almacén
                         </a>
                     </li>
 
@@ -92,6 +99,13 @@
                         <a href="/usuarios"
                             class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
                             Empleados
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('roles.index') }}"
+                            class="flex items-center w-full p-2 pl-11 text-sm text-white/50 hover:text-white hover:bg-white/10 rounded-lg">
+                            Roles / Jerarquías
                         </a>
                     </li>
                 </ul>

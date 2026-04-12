@@ -8,9 +8,8 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\materialesController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\DashboardController;
-
-//route::view('pedidos','/pedidos/pedidos');
 
 // login y ruta principal
 Route::get('/', [AuthController::class, 'Formulario'])->name('login');
@@ -43,8 +42,13 @@ Route::patch('usuarios/{id}/toggle-estatus', [UsuarioController::class, 'toggleE
 Route::get('usuarios/{id}/edit', [UsuarioController::class, 'show'])->name('usuarios.edits');
 Route::patch('usuarios/{id}', [UsuarioController::class, 'patch'])->name('usuarios.patch');
 
+// CRUD de Roles
+Route::resource('roles', RolController::class);
+
 // Sección de Inventario conectado a la API
 Route::get('/Inventario', [InventarioController::class, 'index'])->name('inventario');
+Route::get('/inventario', [InventarioController::class, 'index']); 
+Route::get('/inventario/exportar/{formato}', [InventarioController::class, 'exportar'])->name('inventario.exportar');
 Route::put('/Inventario/{id}', [InventarioController::class, 'updateStock'])->name('inventario.update');
 
 // Sección de Ventas/Pedidos conectado a la API
@@ -56,9 +60,6 @@ Route::resource('materiales', materialesController::class);
 Route::get('materiales/{id}/edit', [materialesController::class, 'show'])->name('materiales.edits');
 Route::put('materiales/{id}', [materialesController::class, 'update'])->name('materiales.updates');
 Route::delete('materiales/{id}', [materialesController::class, 'destroy'])->name('materiales.destroys');
-
-//obtener roles
-Route::get('/roles', [UsuarioController::class, 'getRoles'])->name('usuarios.getRoles');
 
 //pedidos
 Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
