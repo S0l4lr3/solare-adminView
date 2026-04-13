@@ -166,6 +166,29 @@
                 </div>
             </div>
         </div>
+        {{-- Paginación Manual Solare --}}
+        @if(isset($paginacion) && $paginacion['last_page'] > 1)
+        <div class="mt-8 flex items-center justify-between bg-white px-6 py-4 border border-gray-100 shadow-sm">
+            <div class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">
+                Página {{ $paginacion['current_page'] }} de {{ $paginacion['last_page'] }}
+            </div>
+            <div class="flex gap-2">
+                @if($paginacion['current_page'] > 1)
+                    <a href="{{ request()->fullUrlWithQuery(['page' => $paginacion['current_page'] - 1]) }}" 
+                       class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
+                        ← Anterior
+                    </a>
+                @endif
+
+                @if($paginacion['current_page'] < $paginacion['last_page'])
+                    <a href="{{ request()->fullUrlWithQuery(['page' => $paginacion['current_page'] + 1]) }}" 
+                       class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
+                        Siguiente →
+                    </a>
+                @endif
+            </div>
+        </div>
+        @endif
     </section>
 
     <script>

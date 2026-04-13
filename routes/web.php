@@ -63,6 +63,8 @@ Route::delete('materiales/{id}', [materialesController::class, 'destroy'])->name
 
 //pedidos
 Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+Route::put('/pedidos/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
 Route::put('/pedidos/{id}/estado-envio', [PedidoController::class, 'actualizarEstadoEnvio'])->name('pedidos.estadoEnvio');
 
 //dashboard

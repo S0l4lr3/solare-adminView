@@ -17,17 +17,24 @@ class ProductoController extends Controller
     public function index(Request $request)
     {
         $busqueda = $request->input('busqueda');
+        $pagina = $request->input('page', 1);
+        $porPagina = $request->input('per_page', 1000); // Mostramos todos los productos por defecto (o un número muy alto)
+        
         $token = session('api_token');
         $response = Http::withToken($token)->get("{$this->apiUrl}/productos", [
-            'search' => $busqueda
+            'search' => $busqueda,
+            'page' => $pagina,
+            'per_page' => $porPagina // Se lo enviamos al backend
         ]);
 
-        $productos = $response->successful() ? $response->json() : [];
+        $paginacion = $response->successful() ? $response->json() : ['data' => [], 'current_page' => 1, 'last_page' => 1];
+        $productos = $paginacion['data'] ?? [];
 
         $categoriasResponse = Http::withToken($token)->get("{$this->apiUrl}/categorias");
-        $categorias = $categoriasResponse->successful() ? $categoriasResponse->json() : [];
+        $rawCategorias = $categoriasResponse->successful() ? $categoriasResponse->json() : [];
+        $categorias = $rawCategorias['data'] ?? $rawCategorias;
 
-        return view('productos/Productos', compact('productos', 'categorias', 'busqueda'));
+        return view('productos/Productos', compact('productos', 'categorias', 'busqueda', 'paginacion'));
     }
 
     public function create()
