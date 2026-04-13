@@ -102,7 +102,7 @@
                         Precio Venta ↕
                     </a>
                 </th>
-                <th class="px-6 py-4">Estado Red</th>
+                <th class="px-6 py-4">Estado</th>
                 <th class="px-6 py-4"></th>
             </tr>
         </thead>
