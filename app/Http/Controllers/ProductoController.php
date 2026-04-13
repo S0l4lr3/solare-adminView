@@ -11,7 +11,7 @@ class ProductoController extends Controller
 
     public function __construct()
     {
-        $this->apiUrl = env('API_URL', '127.0.0.1:8000/api');
+        $this->apiUrl = env('API_URL', 'http://127.0.0.1:8000/api');
     }
 
     public function index(Request $request)
@@ -123,37 +123,30 @@ class ProductoController extends Controller
         return redirect()->route('productos.index');
     }
 
-    // public function gestionarImagenes($id)
-    // {
-    //     $token = session('api_token');
-
-    //     // Datos del producto
-    //     $resProd = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}");
-    //     $producto = $resProd->successful() ? $resProd->json() : null;
-
-    //     // Lista de imágenes desde el nuevo endpoint
-    //     $resImg = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}/imagenes");
-    //     dd($resImg->json());
-    //     $imagenes = $resImg->successful() ? $resImg->json()['data'] : [];
-
-    //     return view('productos/Imagenes-gestionar', compact('producto', 'imagenes'));
-    // }
-
     public function gestionarImagenes($id)
     {
         $token = session('api_token');
 
+        // Datos del producto
         $resProd = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}");
         $producto = $resProd->successful() ? $resProd->json() : null;
 
+        // Lista de imágenes desde el nuevo endpoint
         $resImg = Http::withToken($token)->get("{$this->apiUrl}/productos/{$id}/imagenes");
-        $imagenes = $resImg->successful() ? $resImg->json()['data'] : [];
-
-        // Construye la URL completa de cada imagen
-        $imagenes = array_map(function ($img) {
-            $img['full_image_url'] = env('IMAGE_URL') . $img['url'];
-            return $img;
-        }, $imagenes);
+        
+        $imagenes = [];
+        if ($resImg->successful()) {
+            $data = $resImg->json();
+            $imagenesRaw = $data['data'] ?? [];
+            
+            // Construye la URL completa de cada imagen usando la variable del .env
+            $baseUrl = rtrim(env('IMAGE_URL'), '/') . '/';
+            
+            foreach ($imagenesRaw as $img) {
+                $img['full_image_url'] = $baseUrl . ltrim($img['url'], '/');
+                $imagenes[] = $img;
+            }
+        }
 
         return view('productos/Imagenes-gestionar', compact('producto', 'imagenes'));
     }
@@ -163,22 +156,29 @@ class ProductoController extends Controller
         $token = session('api_token');
         $pendingRequest = Http::withToken($token)->acceptJson();
 
+        // Enviamos el producto_id explícitamente como espera el Backend
+        $datos = [
+            'producto_id' => $id,
+            'es_principal' => $request->has('es_principal') ? 1 : 0
+        ];
+
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $index => $file) {
                 $pendingRequest->attach(
-                    "imagenes[$index]",
+                    "imagenes[$index]", // Formato array que Laravel entiende en el servidor
                     file_get_contents($file->getRealPath()),
                     $file->getClientOriginalName()
                 );
             }
         }
 
-        $pendingRequest->post("{$this->apiUrl}/productos/{$id}/imagenes", [
-            'producto_id' => $id,
-            'es_principal' => $request->has('es_principal') ? 1 : 0
-        ]);
+        $response = $pendingRequest->post("{$this->apiUrl}/productos/{$id}/imagenes", $datos);
 
-        return back()->with('success', 'Imágenes subidas correctamente.');
+        if ($response->successful()) {
+            return back()->with('success', 'Imágenes subidas correctamente.');
+        }
+
+        return back()->with('error', 'Error al subir imágenes: ' . $response->body());
     }
 
     public function eliminarImagen($id)

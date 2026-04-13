@@ -13,7 +13,6 @@ class InventarioController extends Controller
     {
         $this->apiUrl = env('API_URL', 'http://127.0.0.1:8000/api');
     }
-    protected $apiUrl = 'http://127.0.0.1:8000/api';
 
     /**
      * Muestra el inventario consumiendo el Nodo Backend de Solare.
@@ -23,6 +22,8 @@ class InventarioController extends Controller
         $token = session('api_token');
         $stock = [];
         $error = null;
+        $categorias = [];
+        $materiales = [];
 
         $params = [
             'search' => $request->get('search'),
@@ -42,6 +43,8 @@ class InventarioController extends Controller
 
             if ($response->successful()) {
                 $stock = $response->json()['data'] ?? [];
+            } else {
+                $error = 'No se pudo sincronizar con el nodo de inventario central.';
             }
 
             $resCat = Http::withToken($token)->get("{$this->apiUrl}/categorias");
@@ -54,8 +57,6 @@ class InventarioController extends Controller
 
         } catch (\Exception $e) {
             $error = 'Fallo de conexión con el servidor de inventario.';
-            $categorias = [];
-            $materiales = [];
         }
 
         return view('paginas.Inventario', [
@@ -78,25 +79,18 @@ class InventarioController extends Controller
         $endpoint = $formato === 'pdf' ? 'pdf' : 'csv';
         $params = $request->all();
 
-        // Llamada de servidor a servidor enviando el TOKEN en el Header
         $response = Http::withToken($token)
             ->withHeaders(['Accept' => 'application/json'])
             ->get("{$this->apiUrl}/reportes/inventario/{$endpoint}", $params);
 
         if ($response->successful()) {
-            $extension = $formato === 'pdf' ? 'pdf' : 'xlsx';
+            $extension = $formato === 'pdf' ? 'pdf' : ($formato === 'csv' ? 'csv' : 'xlsx');
             return response($response->body(), 200)
                 ->header('Content-Type', $response->header('Content-Type'))
                 ->header('Content-Disposition', 'attachment; filename="Inventario_Solare.' . $extension . '"');
         }
 
         return back()->with('error', 'No se pudo generar el reporte en el servidor central.');
-            $stock = $response->json()['data'] ?? [];
-            return view('paginas.Inventario', compact('stock'));
-        }
-
-        // Si el nodo de inventario no responde o rechaza el token
-        return view('paginas.Inventario')->with('error', 'No se pudo sincronizar con el nodo de inventario central.');
     }
 
     /**

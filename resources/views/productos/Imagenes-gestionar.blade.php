@@ -96,8 +96,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
                     @forelse($imagenes as $img)
                         <div class="relative group aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50">
-                            {{-- @dd($img) --}}
-                            <img src="{ $img }" class="w-full h-full object-cover">
+                            <img src="{{ $img['full_image_url'] }}" class="w-full h-full object-cover">
                             
                             <!-- Overlay de acciones -->
                             <div

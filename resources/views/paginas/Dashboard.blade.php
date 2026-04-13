@@ -5,6 +5,13 @@
 @section('header_title', 'Bienvenido, ' . (session('user')['nombre'] ?? 'Administrador'))
 
 @section('content')
+    {{-- Alerta de Error de Conexión (Solo si falla la API) --}}
+    @if(isset($error) && $error)
+        <div class="bg-red-50 border-l-4 border-red-500 p-3 mb-6">
+            <p class="text-[10px] text-red-700 font-bold uppercase tracking-widest">Error de Sincronización: {{ $error }}</p>
+        </div>
+    @endif
+
     {{-- ALERTAS CRÍTICAS (Monitor de Almacén) --}}
     @if(($dashboard['ajustes_manuales_24h'] ?? 0) > 0 || count($dashboard['stock_critico'] ?? []) > 0)
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
