@@ -63,6 +63,9 @@ class ProductoController extends Controller
             $request->except(['imagen', '_token'])
         );
 
+        // DEBUG: Descomenta la siguiente línea para ver qué llega al servidor
+        // dd($request->except(['imagen', '_token']));
+
         if ($response->successful()) {
             return redirect()->route('productos.index')->with('success', 'Producto guardado.');
         }
