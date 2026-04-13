@@ -110,7 +110,7 @@
                 <div class="w-8 h-8 rounded-full bg-solare-arcilla flex items-center justify-center font-bold">A</div>
                 <div>
                     {{-- @dd(session('user_data')) --}}
-                    <p class="text-xs font-medium">Hola, {{ session('user_data')['nombre'] }}</p>
+                    <p class="text-xs font-medium">Hola, {{ session('user_data')['nombre'] ?? 'Administrador' }}</p>
                     <a href="/login" class="text-[10px] text-white/30 hover:text-white">Salir</a>
                 </div>
             </div>
